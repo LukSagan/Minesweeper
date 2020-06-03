@@ -1,0 +1,92 @@
+
+/*
+ * 
+
+copyright 2020 £ukasz Sagan
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>
+
+Niniejszy program jest wolnym oprogramowaniem; mo¿esz go
+rozprowadzaæ dalej i/lub modyfikowaæ na warunkach Powszechnej
+Licencji Publicznej GNU, wydanej przez Fundacjê Wolnego
+Oprogramowania - wed³ug wersji 3 tej Licencji lub (wed³ug twojego
+wyboru) którejœ z póŸniejszych wersji.
+
+Niniejszy program rozpowszechniany jest z nadziej¹, i¿ bêdzie on
+u¿yteczny - jednak BEZ JAKIEJKOLWIEK GWARANCJI, nawet domyœlnej
+gwarancji PRZYDATNOŒCI HANDLOWEJ albo PRZYDATNOŒCI DO OKREŒLONYCH
+ZASTOSOWAÑ. W celu uzyskania bli¿szych informacji siêgnij do     Powszechnej Licencji Publicznej GNU.
+
+Z pewnoœci¹ wraz z niniejszym programem otrzyma³eœ te¿ egzemplarz
+Powszechnej Licencji Publicznej GNU (GNU General Public License);
+jeœli nie - zobacz <http://www.gnu.org/licenses/>.
+ * 
+ */
+
+
+package model;
+
+import java.io.Serializable;
+
+public class GameWonStats implements Serializable {
+	private static final long serialVersionUID = 6884731683486544780L;
+	private double time;
+	private int clicks;
+	private String date;
+	
+	public GameWonStats(double timeW, int clicksW, String dateW){
+		super();
+		
+		time = timeW;
+		clicks = clicksW;
+		date = dateW;
+	}
+	
+	public GameWonStats(GameWonStats objToClone){ // clone constructor
+		super();
+		
+		this.time = objToClone.time;
+		this.clicks = objToClone.clicks;
+		this.date = objToClone.date;
+	}	
+	
+	
+	public GameWonStats(){
+		super();
+	}
+	
+	public double readPastGameStatsTime(){
+		return time;
+	}
+	
+	public int readPastGameStatsClicks(){
+		return clicks;
+	}
+
+	public String readPastGameStatsDate(){
+		return date;
+	}
+	
+	public void writePastGameStats(double timeW, int clicksW, String dateW){
+		time = timeW;
+		clicks = clicksW;
+		date = dateW;
+	}
+	
+	public String toString(){		
+		return "Game stats.    Time: " + time + "    Clicks: " + clicks + "    Date: " + date;
+		
+	}
+
+}
