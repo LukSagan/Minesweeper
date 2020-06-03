@@ -90,7 +90,7 @@ public class App {
 
 	@SuppressWarnings("resource")
 	public static void assertNoOtherInstanceRunning() {  // to block more instances of program
-		//System.out.println("App. assertNoOtherInstanceRunning running");
+		//System.out.println("App. assertNoOtherInstanceRunning running ");
 		new Thread(() -> {
 			try {
 				//System.out.println("App. assertNoOtherInstanceRunning    Starting 1st instance of program");
