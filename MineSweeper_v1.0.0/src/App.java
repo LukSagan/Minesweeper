@@ -97,7 +97,7 @@ public class App {
 				new ServerSocket(9000).accept();				
 			} catch (IOException e) {
 				System.out.println("App. assertNoOtherInstanceRunning    Tried to start another instance of program");
-				System.exit(0); // close the program  
+				System.exit(0); // close the program 
 				throw new RuntimeException("the application is probably already started", e);				
 			}
 		}).start();       
