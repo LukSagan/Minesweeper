@@ -88,8 +88,15 @@ public class AboutDialog extends JDialog implements ActionListener {
 		JLabel authorlabel = new JLabel("£ukasz S.");
 		JLabel webPageTLabel = new JLabel("Strona internetowa");
 		//JLabel webPageLabel = new JLabel();
+		
+		/*
 		JEditorPane webPagePane = new JEditorPane("text/html", "<html><body style=\"\">" //
-	            + "<a href=\"http://google.com/\">link</a>" //
+	            + "<a href=\"https://github.com/LukSagan/Minesweeper\">GitHub LukSagan</a>" //
+	            + "</body></html>");
+		*/
+		
+		JEditorPane webPagePane = new JEditorPane("text/html", "<html><body style=\"\">" //
+	            + "<a href=\"\">GitHub LukSagan</a>" //
 	            + "</body></html>");
 		
 		//JLabel licenseLabel = new JLabel(displayText);
@@ -193,7 +200,7 @@ public class AboutDialog extends JDialog implements ActionListener {
 					
 					if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
 						try {
-							Desktop.getDesktop().browse(new URI("http://www.google.pl"));
+							Desktop.getDesktop().browse(new URI("https://github.com/LukSagan/Minesweeper"));
 						} catch (IOException | URISyntaxException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();

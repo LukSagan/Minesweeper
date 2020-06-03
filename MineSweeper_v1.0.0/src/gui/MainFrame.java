@@ -100,7 +100,7 @@ public class MainFrame extends JFrame {
 		// 
 		// pane with minefield  is GridBagLayout    (probably should be GridLayout = cells have same sizes, span only 1 row/column)
 				
-		super("Saper 001");    //calling superclass constructor
+		super("Saper");    //calling superclass constructor
 		//mainFrame = mainframeAdress;		
 		
 		

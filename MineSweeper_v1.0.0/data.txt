@@ -1,6 +1,6 @@
 *** GAME OPTIONS ***
-[window positionX]: 923
-[window positionY]: 115
+[window positionX]: 859
+[window positionY]: 217
 [show statistics]: yes
 
 *** TOTAL GAMES STATISTICS ***
