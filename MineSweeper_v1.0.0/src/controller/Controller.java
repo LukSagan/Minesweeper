@@ -60,14 +60,11 @@ public class Controller {
 	private GameNewWonLostListener intGameMOptionsWindowPosXListener;
 	private GameNewWonLostListener intGameMOptionsWindowPosYListener;
 	private GameObjListener objGameMStatisticsListener;
-	
-	
-	
-	
+		
 	public Controller(){
 		super();    //calling superclass constructor
 		
-		newGame = new Game();      // maybe MainFrame should make new game on first run????
+		newGame = new Game();
 		
 		
 		
@@ -85,14 +82,8 @@ public class Controller {
 				
 				if(textGameMFieldRevealingListener != null ){
 					//System.out.println("      Game. text field listener");
-
-					//textFieldListener.textEmitted("Hello\n");
-					
-					//textFieldListener.textEmitted(clicked.getText());
 					textGameMFieldRevealingListener.textEmitted(text);
-				}
-				
-				
+				}				
 			}			
 		});
 		
@@ -107,8 +98,7 @@ public class Controller {
 					//System.out.println("      Game. text field listener");
 
 					intGameMWonLostListener.numberEmitted(won);
-				}
-				
+				}				
 			}
 		});
 		
@@ -139,7 +129,6 @@ public class Controller {
 				
 				//System.out.println("    Controller. Game   game time: " + text);
 				
-				
 				if(textGameMTimerListener != null ){
 					//System.out.println("      Game. text field listener");
 					textGameMTimerListener.textEmitted(text);
@@ -147,10 +136,7 @@ public class Controller {
 			}
 		});
 		
-		
-		
-		
-		
+				
 		
 		newGame.setArrayListenerGameStats5Games(new GameGames1_5StatsListener(){
 
@@ -167,6 +153,7 @@ public class Controller {
 		});
 		
 		
+		
 		newGame.setStringListenerGameStatsNewRecord(new ButtonFieldListener(){
 
 			@Override
@@ -177,36 +164,27 @@ public class Controller {
 				
 				if(textGameMStatsNewRecordListener != null){					
 					textGameMStatsNewRecordListener.textEmitted(text);
-				}
-				
+				}				
 			}		
 		});
+		
 		
 		// OBJECT listener
 		newGame.setObjListenerGameStatistics(new GameObjListener(){
 			@Override
 			public void objectEmitted(ObjListener object) {
-				// TODO Auto-generated method stub				
-				//System.out.println("    Controller. Listener OBJECT. code: " + object.getCode());				
+				// TODO Auto-generated method stub
+				//System.out.println("    Controller. Listener OBJECT. code: " + object.getCode());		
+				
 				if(objGameMStatisticsListener != null){
 					objGameMStatisticsListener.objectEmitted(object);
 				}				
 			}			
 		});
 		
+				
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		newGame.setIntListernerGameOptionsWindowPosX(new GameNewWonLostListener(){   // listener of GameNewWonLost
+		newGame.setIntListernerGameOptionsWindowPosX(new GameNewWonLostListener(){
 
 			@Override
 			public void numberEmitted(int won) {
@@ -216,12 +194,13 @@ public class Controller {
 					//System.out.println("    Controller. WindowPos X listener: " + won);
 
 					intGameMOptionsWindowPosXListener.numberEmitted(won);
-				}
-				
+				}				
 			}
 		});
 		
-		newGame.setIntListernerGameOptionsWindowPosY(new GameNewWonLostListener(){   // listener of GameNewWonLost
+		
+		
+		newGame.setIntListernerGameOptionsWindowPosY(new GameNewWonLostListener(){
 
 			@Override
 			public void numberEmitted(int won) {
@@ -231,12 +210,13 @@ public class Controller {
 					//System.out.println("    Controller. WindowPos Y listener: " + won);
 
 					intGameMOptionsWindowPosYListener.numberEmitted(won);
-				}
-				
+				}				
 			}
 		});
 		
-		newGame.setIntListernerGameOptionsStatsWindow(new GameNewWonLostListener(){   // listener of GameNewWonLost
+		
+		
+		newGame.setIntListernerGameOptionsStatsWindow(new GameNewWonLostListener(){
 
 			@Override
 			public void numberEmitted(int won) {
@@ -246,8 +226,7 @@ public class Controller {
 					//System.out.println("    Controller. Options Stats Window listener: " + won);					
 
 					intGameMOptionsStatsWindowListener.numberEmitted(won);
-				}
-				
+				}				
 			}
 		});
 		
@@ -256,40 +235,34 @@ public class Controller {
 		
 		
 		
+	} // ends conructor
+	
+	
+	public void createNewGame(){ // this is how mainFrame calls making new game
+		newGame.newGame();		
 	}
-	
-	
-	public void createNewGame(){
-		newGame.newGame();
 		
-	}
-	
-	
 	
 	public boolean returnIfGameIsNotRunning(){    // to allow action when clicking 'new game' buttons
-		
 		return newGame.returnIfGameIsNotRunning();
 	}
+	
 	
 	public void remoteFinishGame(){    // used when new game interrupts existing game
 		newGame.remoteFinishGame();
 	}
 	
 	
-	
-	
 	public void fieldLeftClickedSendToGame(String text){
 		// sends text about clicked field from Minefield to Game
 		
-		//System.out.print("%10s: ");
-		//System.out.println("    Controller. Clicked field: " + text);
-		
+		//System.out.println("    Controller. Clicked field: " + text);		
 		newGame.fieldLeftClicked(text);
-		//newGame.testMessage();
 	}
 	
+	
 	public void fieldRightClickedSendToGame(String text){
-		// sends text about right clicked field from Minefield to Game		
+		// sends text about right clicked field from Minefield to Game
 		
 		newGame.fieldRightClicked(text);
 	}
@@ -308,21 +281,10 @@ public class Controller {
 		newGame.resetGamesStats();		
 	}
 	
-	public void writeGsmeSettingsToFile(){
+	public void writeGameSettingsToFile(){
 		newGame.writeSettingsToFile();	
 	}
 	
-	
-	
-	/*
-	public void gameActionSendToMinefield(String text){
-		// sends ????               text about clicked field from Minefield to Game
-		
-		System.out.println("    Controller. Clicked field: " + text);
-		
-		newGame.fieldLeftClicked(text);
-	}
-	*/
 	
 	public void setStringListener(ButtonFieldListener listener){
 		this.textGameMFieldRevealingListener = listener;		

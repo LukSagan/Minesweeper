@@ -45,9 +45,7 @@ import java.util.TimerTask;
 
 import gui.ButtonFieldListener;
 
-//sysout spaces      
 public class Game extends GameStatistics {
-	//implements ActionListener
 	
 	private static int[][] fieldsElementsLocation;    // stores where are mines, numbers, blanks
 	// Minefield is 9x9  [0-8;0-8]
@@ -76,8 +74,6 @@ public class Game extends GameStatistics {
 	//  4   f   5
 	//  6   7   8
 	
-	
-	private static boolean activateNewGameButton = false;    // prevents accidental starting new game, starting new game while other is ongoing is possible only through menu option
 	private static boolean gameFinished = true;    // tracks when game gets finished (won or lost)
 	private static boolean firstClickDone = false;  // tracks if player left clicked field in new game (this is exactly when game starts)
 	
@@ -86,18 +82,12 @@ public class Game extends GameStatistics {
 	private static int flagsUsed = 0;     // this is for counting   max mines - flags used   shown later as remaining mines (ones that are not flagged) 
 	private int gameTimeGUITimer = 0;  // counts time (seconds) to send to display game time in GUI 
 	
-	//static Clock clockGameStart;     // ???? for deletion, using parent now
-	//private Timer gameTimer;    // for making timer after first click in new game
 	private TimerTask gameTimerTask;
 	
 	private ButtonFieldListener textGameFieldRevealingListener;    // listener, sends information to Minefield about fields to reveal
 	private GameNewWonLostListener intGameNewWonLostListener;    // listener, sends information to Toolbar to change faceico button icon
 	private ButtonFieldListener textGameRemainingMinesListener;    // listener, sends information to Toolbar to change remaining mines counter
 	private ButtonFieldListener textGameGUITimerListener;    // listener, sends information to Toolbar to change timer/clock
-	
-
-	//private int[] minesLocation;	// stores location of mines        NOT USED ????
-	
 	
 	
 	
@@ -107,9 +97,9 @@ public class Game extends GameStatistics {
 	
 	
 	private void fillFieldsWithBlanks() {
-		// method to fill fieldsElementsLocation with blanks
+		// method to fill fieldsElementsLocation with blank fields
 		
-		fieldsElementsLocation = new int[9][9];       // maybe create them with object, and just reset here? ????
+		fieldsElementsLocation = new int[9][9];
 		fieldsRevealed = new int[9][9];
 		fieldsFlagged = new int[9][9];
 		
@@ -220,10 +210,8 @@ public class Game extends GameStatistics {
 
 	private void generateMineLocation() {
 		// method for method generateMinesLocation. finds location for 1 mine
-		
-		// infinite loop protection ????
 				
-		Random random = new Random();		// recursion wont create too many objects in bad situation? memory leak????
+		Random random = new Random();		// recursion wont create too many objects in bad situation?   NOT  up to 500 calls
 		int mineX = random.nextInt(9);		// 9 x 9 field   this will find random between 0-8
 		int mineY = random.nextInt(9);
 		
@@ -246,16 +234,10 @@ public class Game extends GameStatistics {
 		// could also make it other way. while generating mines code could increment fields around mine. Prob. max 80 increments for 10 mines. Checkin each field does over 470 checks each new game
 		
 		
-		//fieldsElementsLocation[0][0] = 9;     // 9 is for mine
-		
-		
 		int amountOfChecks = 0;   // counts how many checks code does for generating numbers around mines
 		for (int i=0; i<9; i++ ){			
 			for (int j=0; j<9; j++ ){    // conditions to go through each field
-				//fieldsElementsLocation[i][j] = 0;			
-				
-				
-				
+								
 				if (fieldsElementsLocation[i][j] != 9){
 					int amountOfNearbyMines = 0;   // counts nearby mines
 					
@@ -264,57 +246,26 @@ public class Game extends GameStatistics {
 						if ( (i+surroundinFieldsLocation[k][0]>=0) && (i+surroundinFieldsLocation[k][0]<=8) && (j+surroundinFieldsLocation[k][1]>=0) && (j+surroundinFieldsLocation[k][1]<=8) ){    // conditions to not check fields that dont exist
 							
 							if ( fieldsElementsLocation[i+surroundinFieldsLocation[k][0]][j+surroundinFieldsLocation[k][1]] == 9 ){  // added as separate condition to make it more readable
-								
-								amountOfNearbyMines ++;   // increase number of nearby mines if there are any
-								
-							}
-							
+								amountOfNearbyMines ++;   // increase number of nearby mines if there are any								
+							}							
 							amountOfChecks ++;
-						}
-						
-						
+						}		
 					}
-					
 					fieldsElementsLocation[i][j] = amountOfNearbyMines;   // write number of nearby mines to the field
-				}
-				
+				}				
 			}			
 		}
 		System.out.println("      Game. Checks for generating numbers around mines: " + amountOfChecks);
 	}
 
-
-	
-	
+		
 	public Game() {
 		super();    //calling superclass constructor		
 		
 		newGame();
 		readStatsFromFile();
-		//showStatsFromFile();  // ???? for testing purposes only
 		
-		
-		/*
-		if(arrayGameStats5GamesListener != null){
-			arrayGameStats5GamesListener.setEmitted(gamesStats);			
-		}
-		
-		if(intGameOptionsWindowPosXListener != null){
-			//System.out.println("      Game. Game n");
-			intGameOptionsWindowPosXListener.numberEmitted(windowPositionXSetting);			
-		}
-		
-		if(intGameOptionsWindowPosYListener != null){
-			intGameOptionsWindowPosYListener.numberEmitted(windowPositionYSetting);			
-		}
-		
-		if(intGameOptionsStatsWindowListener != null){
-			intGameOptionsStatsWindowListener.numberEmitted(1);			
-		}
-		*/
-		
-		
-		TimerTask gameTimerTask = new TimerTask(){    // packing listeners to initialize GUI
+		TimerTask gameTimerTask = new TimerTask(){    // timing listeners to initialize GUI
 
 			@Override
 			public void run() {
@@ -351,13 +302,8 @@ public class Game extends GameStatistics {
 					}
 					String[] stringArray = {Integer.toString(gamesPlayedNumberHistory), 
 							Integer.toString(gamesWonNumberHistory), 
-							//doubleAccuracyRounder(((double)gamesWonNumberHistory/(double)gamesPlayedNumberHistory*100d), 0.1d),
 							precentDivide0Safety,
-							//Double.toString(  doubleAccuracyRounder(((double)gamesWonNumberHistory/(double)gamesPlayedNumberHistory*100d), 0.1d)  ),
-							//Double.toString((double)((double)gamesWonNumberHistory/(double)gamesPlayedNumberHistory*100)), 
-							//new DecimalFormat("##.#").format(  (double)gamesWonNumberHistory/(double)gamesPlayedNumberHistory*100d     ),
 							Double.toString(averageTimeOfGameHistory)};
-					//objGameStatisticsListener.objectEmitted(new ObjListener(ObjListener.overallStatsStats, null, 0, 0, stringArray, null));
 					objGameStatisticsListener.objectEmitted(new ObjListener(ObjListener.overallStatsStats, null, 0, 0, stringArray));
 				}
 				
@@ -365,21 +311,8 @@ public class Game extends GameStatistics {
 					textGameStatsNewRecordListener.textEmitted("Powodzenia!");				
 				}
 				
-				//lastGameLabel.setText("Ostani¹ grê " + stringArray[0] + ". Czas: " + stringArray[1] + ". Klikniêæ: " + stringArray[2] + 
-				//		". Œredni czas klikniêcia: " + stringArray[3] + ". Najszybszy: " + stringArray[4] + 
-				//		". Najwolniejszy: " + stringArray[5] + "U¿yto " + stringArray[0] + " flag.");
-				
 				
 				if(objGameStatisticsListener != null){ // last game stats send to stats panel		
-					/*
-					String[] stringArray = {gameLastStats.readPastGameStatsDate(), 
-							Double.toString(gameLastStats.readPastGameStatsTime()), 
-							Integer.toString(gameLastStats.readPastGameStatsClicks()), 
-							"-1",
-							"",
-							"",
-							""};
-					*/
 					String[] stringArray = {gameLastStats.readPastGameStatsDate(), 
 							doubleAccuracyRounder(gameLastStats.readPastGameStatsTime(), 0.1d),
 							Integer.toString(gameLastStats.readPastGameStatsClicks()), 
@@ -387,10 +320,8 @@ public class Game extends GameStatistics {
 							"",
 							"",
 							""};
-					//objGameStatisticsListener.objectEmitted(new ObjListener(ObjListener.lastGameStats, null, 0, 0, null, stringArray));
-					objGameStatisticsListener.objectEmitted(new ObjListener(ObjListener.lastGameStats, null, 0, 0, stringArray));
 					
-					//objGameStatisticsListener.objectEmitted(new ObjListener(ObjListener.lastGameStats, null, 0, 0, stringArray));
+					objGameStatisticsListener.objectEmitted(new ObjListener(ObjListener.lastGameStats, null, 0, 0, stringArray));
 				}
 				
 				if(objGameStatisticsListener != null){ // move window to location from file
@@ -409,12 +340,7 @@ public class Game extends GameStatistics {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-		
-		
-		
-		
+				
 	}
 	
 	public void newGame() {
@@ -424,7 +350,6 @@ public class Game extends GameStatistics {
 		generateMinesLocation();
 		generateNumbersAroundMines();
 		
-		activateNewGameButton = false;
 		gameFinished = true;
 		//System.out.println("      Game.       gameFinished becomes true        newGame method ");
 		
@@ -434,7 +359,7 @@ public class Game extends GameStatistics {
 		flagsUsed = 0;
 		gameTimeGUITimer = 0;
 
-		TimerTask gameTimerTask = new TimerTask(){    // ???? make this a method
+		TimerTask gameTimerTask = new TimerTask(){
 
 			@Override
 			public void run() {
@@ -453,10 +378,7 @@ public class Game extends GameStatistics {
 				
 				if (textGameGUITimerListener != null){
 					textGameGUITimerListener.textEmitted("000");
-				}
-				
-				
-				
+				}		
 			}
 		};
 		
@@ -470,14 +392,6 @@ public class Game extends GameStatistics {
 		
 		
 		resetCurrentGameStatistics();   // data times, counters
-		
-		
-		
-		
-		
-		
-		
-		//testerNumberIntDouble();  // for testing purposes only ????
 	}
 	
 	
@@ -495,46 +409,30 @@ public class Game extends GameStatistics {
 			//System.out.println("      Game.       gameFinished becomes false      field 1st left clicked ");
 		}
 		
-		
 		//System.out.println("      Game. Running minefieldFieldClicked. Type of field from Game.fields: " + fieldsElementsLocation[x][y]);
-		
-		//changeMinefieldField();
-		
+				
 		if (      (fieldsRevealed[x][y] == 0) && (fieldsFlagged[x][y] == 0) && (!gameFinished)        ) {    // !gameFinished prevents clicking unflagged mine fields after game is won
 			if (textGameFieldRevealingListener != null) {
 				//System.out.println("      Game. text field listener");
-				
-				
+								
 				if (!firstClickDone){
 					System.out.println("      Game. First click");
 					firstClickDone = true;
 					
-					
 					clockGameStart = Clock.systemDefaultZone();
-					//System.out.println("      Game. Current absolute time in milis: " + clockGameStart.millis());
-					////System.out.println("      Game. Current absolute time in milis: " + clockGameStart.millis() + "     after casting: " + (int)doubleAccuracyRounder(clockGameStart.millis(), 100));
-					////System.out.println("      Game. Current absolute time in milis: " + clockGameStart.millis() + "     as double: " + doubleAccuracyRounder(clockGameStart.millis(), 100));
-					////clockGameStart.mi
-					
-					//System.out.println("      Game. Current game date: " + clockGameStart);
-					//System.out.println("      Game. Current game date: " + clockGameStart.toString());
-					//System.out.println("      Game. Current instant game date: " + clockGameStart.instant());
-					
 					
 					timeGameStarted = clockGameStart.millis();
 					timeOfTheClick = timeGameStarted;
 					timeOfThePreviousClick = timeOfTheClick;
 					
 					// making timer for GUI timer 
-					gameTimerTask = new TimerTask(){    // ???? make this a method
-
+					gameTimerTask = new TimerTask(){
 						@Override
 						public void run() {
 							// TODO Auto-generated method stub
 							
 							//System.out.println("      Game. Running timer every second: " + clock.millis());
-							gameTimeGUITimer ++;
-							
+							gameTimeGUITimer ++;							
 							if (textGameGUITimerListener != null){
 								//textGameGUITimerListener.textEmitted(Integer.toString(gameTimeGUITimer));  // ???? old one, this didnt have '0's formatting
 								textGameGUITimerListener.textEmitted(formatIntTo3DigitText(gameTimeGUITimer));
@@ -555,17 +453,13 @@ public class Game extends GameStatistics {
 					timeOfThePreviousClick = timeOfTheClick;// moved it up here, so times are more accurate when game is done (especially visible in 2 clicks game)  (there was difference 0,01sec. Sometimes even with accuracy 0,1sec rounding could show this bug)
 					timeOfTheClick = clockGameStart.millis();		
 				}
-				
-					
-				//textGameMethodListener.textEmitted("1.1.6");				
+							
 				fieldsRevealed[x][y] = 1;   // sets field to 'revealed' to not run code for revealed fields
 				
 				clicks ++;
 				//System.out.println("      Game. Clicks counter: " + clicks);			
 				
 				
-				//timeOfThePreviousClick = timeOfTheClick;   // ???? moved it up, so times are more accurate when game is done in 2 clicks  (there was difference 0,01sec. Sometimes even with accuracy 0,1sec rounding could show this bug)
-				//timeOfTheClick = clockGameStart.millis();
 				if(  (timeOfTheClick-timeOfThePreviousClick)>10  ){
 					clickTime = (double)( ((double)timeOfTheClick-(double)timeOfThePreviousClick)/1000   );
 					//System.out.println("      Game. Click time: " + clickTime);
@@ -578,13 +472,7 @@ public class Game extends GameStatistics {
 						slowestClick = clickTime;					
 					}					
 					
-				}
-				
-				
-				
-				
-				
-				
+				}				
 				
 				// below conditions if clicked on blank, mine or number field
 				if (fieldsElementsLocation[x][y] == 0){
@@ -614,42 +502,30 @@ public class Game extends GameStatistics {
 					//System.out.println("      Game.       gameFinished becomes true      game lost");
 					
 					gameWonLost = 0;
-					//textGameFieldRevealingListener.textEmitted(x + "." + y + "." + fieldsElementsLocation[x][y]);
 					textGameFieldRevealingListener.textEmitted(x + "." + y + ".r");  // 'r' code, to correctly display clicked mine
 					
 					System.out.println();
 					System.out.println("      Game.  ^^^^^^^  Game Lost!!!  ^^^^^^^");
 					
-					for (int i = 0; i < 9; i++) {  // reveal reamaining fields
+					for (int i = 0; i < 9; i++) {  // reveal remaining fields
 						for (int j = 0; j < 9; j++) { // conditions to go through each field
 							if (fieldsRevealed[i][j] == 0) {
-								//fieldsElementsLocation[i][j] = 0;
-								
-								
-								
-								
+															
 								if (fieldsFlagged[i][j] == 0) {
 									// reveal not flagged fields
 									
 									fieldsRevealed[i][j] = 1; // sets field to 'revealed' to not run code for revealed fields
 									textGameFieldRevealingListener.textEmitted(i + "." + j + "." + fieldsElementsLocation[i][j]);
-									
-									//fieldsElementsLocation[i][j] = amountOFNearbyMines;   // write number of nearby mines to the field
 								} else if (     (fieldsFlagged[i][j] == 1) && (fieldsElementsLocation[i][j] == 9)     ){
 									// fields correctly flagged
 									
-									
-									
+
 								} else if (     (fieldsFlagged[i][j] == 1) && (fieldsElementsLocation[i][j] != 9)     ){
 									// fields incorrectly flagged
 									
 									fieldsRevealed[i][j] = 1; // sets field to 'revealed' to not run code for revealed fields
 									textGameFieldRevealingListener.textEmitted(i + "." + j + "." + fieldsElementsLocation[i][j] + "r");
-								}
-							
-							
-							
-							
+								}	
 							}
 						}
 					}
@@ -666,11 +542,9 @@ public class Game extends GameStatistics {
 					// clicked on number field
 					
 					//System.out.println("      Game. number field");
-					// ???? not needed? no action to do
 					
 					textGameFieldRevealingListener.textEmitted(x + "." + y + "." + fieldsElementsLocation[x][y]);
 					counterNonMineFieldsRevealed++;
-					//System.out.println("      Game. counterNonMineFieldsRevealed: " + counterNonMineFieldsRevealed);
 				}
 				
 
@@ -682,8 +556,7 @@ public class Game extends GameStatistics {
 					gameFinished = true;
 					//System.out.println("      Game.       gameFinished becomes true     game won");
 					
-					gameWonLost = 1;
-					
+					gameWonLost = 1;			
 					
 					for (int i=0; i<9; i++ ){	// showing unrevealed mines after game was won		
 						for (int j=0; j<9; j++ ){
@@ -703,37 +576,8 @@ public class Game extends GameStatistics {
 					gameFinishedActions();
 					
 				}
-					
-				
-				/*
-				// ???? maybe leave this as learning option?
-				int fieldRevealingMode = 2; // for testing purposes. changes amount of fields discovered after clicking 1 field. '1' is like normal game, '2' shows all fields (easy check mines, numbers, blanks)
-
-				switch (fieldRevealingMode) {
-					case 1:
-						textGameFieldRevealingListener.textEmitted(x + "." + y + "." + fieldsElementsLocation[x][y]);
-	
-						break;
-					case 2:
-						for (int i = 0; i < 9; i++) {
-							for (int j = 0; j < 9; j++) { // conditions to go through each field
-								//fieldsElementsLocation[i][j] = 0;			
-	
-								textGameFieldRevealingListener.textEmitted(i + "." + j + "." + fieldsElementsLocation[i][j]);
-	
-								//fieldsElementsLocation[i][j] = amountOFNearbyMines;   // write number of nearby mines to the field
-	
-							}
-						}
-						gameFinished = true;
-						gameFinishedActions();
-						break;
-				}
-				*/
-				
 			} 
-		}		
-		
+		}			
 	}
 	
 	
@@ -759,10 +603,7 @@ public class Game extends GameStatistics {
 					//System.out.println("      Game. Field right clicked. Clicked field: " + x + "." + y);
 					textGameFieldRevealingListener.textEmitted(x + "." + y + "." + fieldsElementsLocation[x][y] + "1");
 					sendListenerRemaingMines(flagsUsed);
-
 				}
-				
-				
 				
 				
 			} else if (fieldsFlagged[x][y] == 1) {  // here actions to do when trying to flag flagged field
@@ -780,20 +621,13 @@ public class Game extends GameStatistics {
 					textGameFieldRevealingListener.textEmitted(x + "." + y + "." + fieldsElementsLocation[x][y] + "0");
 					sendListenerRemaingMines(flagsUsed);
 				}
-			}
-			
-			
+			}		
 			//System.out.println("      Game. Flags used: " + flagsUsed);
 		}
 	}
 	
 	
-	
-	
-	
-	
-	
-	
+		
 	private void blankFieldsRevealer(int x, int y){
 		// this will reveal blank fields, surrounding blank fields and number fields
 		
@@ -804,7 +638,7 @@ public class Game extends GameStatistics {
 		for (int k=0; k<surroundinFieldsLocation.length; k++){   // goes through each nearby field
 			//System.out.println("test 2");
 			
-			int a = x+surroundinFieldsLocation[k][0];       // ???? maybe later can be send in listener as number directly without creating those variables
+			int a = x+surroundinFieldsLocation[k][0];
 			int b = y+surroundinFieldsLocation[k][1];
 			
 			//int fieldsChecked = 0;   // add this as global, reset when method called in main method
@@ -830,14 +664,9 @@ public class Game extends GameStatistics {
 						counterNonMineFieldsRevealed++;
 						blankFieldsRevealer(a,b);			
 					}
-				}
-				
-				
+				}				
 			}
-			
-			
 		}
-				
 	}
 	
 	
@@ -898,8 +727,6 @@ public class Game extends GameStatistics {
 		System.out.println();
 		System.out.println("      Game. Game finished, Played for: " + gameTime + "sec      time in milisec.: " + (timeGameEnded-timeGameStarted) + "      flags used: " + flagsUsed);
 		System.out.println("      Game.    clicks done: " + clicks + "   fastest click: " + fastestClick + "   slowest click: " + slowestClick + "   avg click: " + averageClick);
-		// System.out.println("      Game.    avg click: " + averageClick + "    avg click by game/clicks: " + (gameTime/(clicks-1)));  // ????
-		
 		
 		
 		gameTimeRounded = doubleAccuracyRounder(gameTime, 0.1d);		
@@ -911,58 +738,22 @@ public class Game extends GameStatistics {
 		//System.out.println("      Game. Size of gamesStats" + gamesStats.size());
 		
 		int wasGameLostWonRecord = 0;  // 0 lost,  1 won ,   2 record
-		
-		/*
-		Clock clock = Clock.systemUTC();
-		//Clock clock = Clock.systemDefaultZone(); // same result as above
-		System.out.println("      Game. Current instant game date: " + clock.instant());
-		System.out.println("      Game. Current instant game date: " + clock.instant().atZone(ZoneId.systemDefault())    );
-		System.out.println("      Game. Current instant game date: "
-				+ "Day: " + clock.instant().atZone(ZoneId.systemDefault()).getDayOfMonth()
-				+ " Month: " + clock.instant().atZone(ZoneId.systemDefault()).getMonthValue()
-				+ " Year: " + clock.instant().atZone(ZoneId.systemDefault()).getYear()
-				+ "   all together: " + clock.instant().atZone(ZoneId.systemDefault()).getDayOfMonth()
-				+ "." + clock.instant().atZone(ZoneId.systemDefault()).getMonthValue()
-				+ "." + clock.instant().atZone(ZoneId.systemDefault()).getYear()  );
-		
-		
-		//clock.instant().atZone(ZoneId.systemDefault());
-		
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.YYYY");
-		String dateString = formatter.format(  clock.instant().atZone(ZoneId.systemDefault())      );
-		//System.out.println("      Game. Current instant game date: " + formatter.format(  clock.instant().atZone(ZoneId.systemDefault())      )     );
-		System.out.println("      Game. Current instant game date: " + dateString     );
-		*/
-		
-		
-		Clock clock = Clock.systemUTC();
-		//DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.YYYY");
+				
+		Clock clock = Clock.systemUTC(); // getting date of played game
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY.MM.dd");
 		gameDate = formatter.format(  clock.instant().atZone(ZoneId.systemDefault())      );;
 		
 		
-		
-		
 		if( gameWonLost == 1 ){	// game was won, check times, add last game to arrayGameStats with last 5 best games amd recent one
 			gamesWonNumberHistory++;
-			//boolean wasThereRecord = false;
 			wasGameLostWonRecord = 1;
-			//System.out.println("      Game. Comparing times. Last game time: " + gameTime + "    worst game time: "  + gamesStats.get(4).readPastGameStatsTime() + "    best game time: " + gamesStats.get(0).readPastGameStatsTime());
-			//if( gameTime < game5Stats.readPastGameStatsTime() ){			
+			//System.out.println("      Game. Comparing times. Last game time: " + gameTime + "    worst game time: "  + gamesStats.get(4).readPastGameStatsTime() + "    best game time: " + gamesStats.get(0).readPastGameStatsTime());			
 			if( gameTime < gamesStats.get(4).readPastGameStatsTime() ){ // game was won and record
 				// last game had better time then previous 5th game, so add to list sort and save 5 ones
 				//System.out.println("      Game. LAST GAME was better than previous 5th one");
-				// ???? sort games list, call stats viewer listener if option is on
-				
-				
+				// sort games list, call stats viewer listener if option is on				
 				//System.out.println("      Game. Last game time: " + gameTime + "  best past game time: " + gamesStats.get(0).readPastGameStatsTime());
-				//if( gameTime < game1Stats.readPastGameStatsTime() ){
-				
-				
-				
-				
-				
-				
+								
 				if( gameTime < gamesStats.get(0).readPastGameStatsTime() ){
 					// last game had better time then previous 1st game, so show something in game ????
 					
@@ -971,7 +762,6 @@ public class Game extends GameStatistics {
 						//System.out.println("      Game. NEW RECORD listener !! Time: " + gameTime);						
 						textGameStatsNewRecordListener.textEmitted("Nowy rekord!  Czas:  " + gameTimeRounded + " sek.");
 					}					
-					//wasThereRecord = true;
 					wasGameLostWonRecord = 2;
 				}else{ // game was won, wasnt record, but got on best 5 list					
 					if(textGameStatsNewRecordListener != null){
@@ -980,22 +770,11 @@ public class Game extends GameStatistics {
 				}
 				
 				//System.out.println("      Game. Game was won. Adding last game to games Array. Time:  " + gameTimeRounded + "  clicks:" + clicks + "   + some DATE");
-				//addRecentGameToArray(gameTime, clicks, "2020.05.30");
-				
-				//addRecentGameToArray(gameTimeRounded, clicks, "2020.05.30");
 				addRecentGameToArray(gameTimeRounded, clicks, gameDate);
-				
-				
+								
 				
 				if(arrayGameStats5GamesListener != null){ // best 5 games send to stats panel
-					
 					//System.out.println("      Game.  Game was won. Sending best 5 games to statsPanel");
-					/*
-					for(GameWonStats someGame: gamesStats){  // prints best 5 games in console
-						System.out.println(someGame);						
-					}
-					*/
-					
 					arrayGameStats5GamesListener.setEmitted(gamesStats);			
 				}
 			}else{ // game was won, didnt get on best 5 list, so just send text to statsPanel
@@ -1005,57 +784,27 @@ public class Game extends GameStatistics {
 			}
 			
 			
-			
-			/*
-			//if( gameTime < gamesStats.get(0).readPastGameStatsTime() ){   // this is for showing  dialog game lost/won/record
-			if( wasThereRecord ){   // this is for showing  dialog game lost/won/record
-				// last game had better time then previous 1st game   RECORD
-				
-				//System.out.println("      Game. LAST GAME was better than previous 1st one.   NEW RECORD !!");
-				if(objGameStatisticsListener != null){					
-					objGameStatisticsListener.objectEmitted(new ObjListener(ObjListener.showGameWonLostPopUp, ObjListener.messageGameWonRecord));
-				}				
-			}else{ // game was won, wasnt record, but got on best 5 list					
-				if(objGameStatisticsListener != null){	   // this is for showing  dialog game lost/won/record				
-					objGameStatisticsListener.objectEmitted(new ObjListener(ObjListener.showGameWonLostPopUp, ObjListener.messageGameWon));
-				}		
-			}
-			*/
-			
-			
-			
 		}else{ // game was lost, so just send text to statsPanel
 			System.out.println("      Game.  Last game time: " + gameTimeRounded);			
 			if(textGameStatsNewRecordListener != null){
 				textGameStatsNewRecordListener.textEmitted("Powodzenia!");
 			}
 			
-			/*
-			if(objGameStatisticsListener != null){					
-				objGameStatisticsListener.objectEmitted(new ObjListener(ObjListener.showGameWonLostPopUp, ObjListener.messageGameLost));
-			}
-			*/
 			
 		}
 		
 		
 		
-		
-		
 		gameTime = Double.parseDouble(  doubleAccuracyRounder(gameTime, 0.1d)  );  // rounding gameTime do 1 decimal 
-		//gameLastStats = new GameWonStats(gameTime, clicks, "2020.05.01");
 		gameLastStats = new GameWonStats(gameTime, clicks, gameDate);
 		
 		
 		if(objGameStatisticsListener != null){ // overall stats send to stats panel		
 			String[] stringArray = {Integer.toString(gamesPlayedNumberHistory), 
 					Integer.toString(gamesWonNumberHistory), 
-					//Double.toString((double)((double)gamesWonNumberHistory/(double)gamesPlayedNumberHistory*100)),
 					doubleAccuracyRounder(((double)gamesWonNumberHistory/(double)gamesPlayedNumberHistory*100), 0.1d),
-					//Double.toString(  doubleAccuracyRounder(((double)gamesWonNumberHistory/(double)gamesPlayedNumberHistory*100), 0.1f)  ),
 					Double.toString(averageTimeOfGameHistory)};
 			
-			//objGameStatisticsListener.objectEmitted(new ObjListener(ObjListener.overallStatsStats, null, 0, 0, stringArray, null));
 			objGameStatisticsListener.objectEmitted(new ObjListener(ObjListener.overallStatsStats, null, 0, 0, stringArray));
 		}
 		
@@ -1065,15 +814,6 @@ public class Game extends GameStatistics {
 			String gameWonLostS = "przegrano";
 			if( gameWonLost == 1 ) gameWonLostS = "wygrano";
 			
-			/*
-			String[] stringArray = {gameWonLostS, 
-					Double.toString(gameTime), 
-					Integer.toString(clicks), 
-					Double.toString(averageClick),
-					Double.toString(fastestClick),
-					Double.toString(slowestClick),
-					Integer.toString(flagsUsed)};
-			*/
 			String[] stringArray = {gameWonLostS,
 					doubleAccuracyRounder(gameTime, 0.1d),
 					Integer.toString(clicks), 
@@ -1081,19 +821,11 @@ public class Game extends GameStatistics {
 					doubleAccuracyRounder(fastestClick, 0.1d),
 					doubleAccuracyRounder(slowestClick, 0.1d),
 					Integer.toString(flagsUsed)};
-			//objGameStatisticsListener.objectEmitted(new ObjListener(ObjListener.lastGameStats, null, 0, 0, null, stringArray));
 			objGameStatisticsListener.objectEmitted(new ObjListener(ObjListener.lastGameStats, null, 0, 0, stringArray));
 		}
 		
-		//writeStatsToFile(800, 500, "no", gamesPlayedNumberHistory, gamesWonNumberHistory, (double)25.5, (double)21.6, 42, "2020.04.30", gameTime, clicks, "2020.05.01");
-		// yes no
-		//writeStatsToFile(800, 500, "yes", gamesPlayedNumberHistory, gamesWonNumberHistory, (double)25.5, gameTime, clicks, "2020.05.01");
-		//writeStatsToFile(800, 500, "yes", gamesPlayedNumberHistory, gamesWonNumberHistory, averageTimeOfGameHistory, gameTime, clicks, "2020.05.01");
-		//writeStatsToFile(gameTime, clicks, "2020.05.01");
 		writeStatsToFile(gameTime, clicks, gameDate);
-		
-		
-		
+						
 		
 		if(objGameStatisticsListener != null){
 			if( wasGameLostWonRecord == 0 ){
@@ -1106,16 +838,6 @@ public class Game extends GameStatistics {
 			}
 		}
 		
-
-		
-		
-		
-		// ???? for now, later 1st click will reset timer to "000"
-		/*
-		if (textGameTimerListener != null){
-			textGameTimerListener.textEmitted("000");
-		}
-		*/
 		System.out.println("");
 		System.out.println("");
 	}
@@ -1133,10 +855,6 @@ public class Game extends GameStatistics {
 		
 		//System.out.println("      Game. Reseting stats");		
 		resetStatsCurrentGameAndBest5();
-		//writeStatsToFile(800, 500, "yes", gamesPlayedNumberHistory, gamesWonNumberHistory, (double)25.5, gameTime, clicks, "2020.05.01");
-		//writeStatsToFile(800, 500, "yes", gamesPlayedNumberHistory, gamesWonNumberHistory, averageTimeOfGameHistory, gameTime, clicks, "2020.05.01");
-		
-		//writeStatsToFile(gameTime, clicks, "2020.05.01");
 		writeStatsToFile(999.9d, 0, "2020.05.01");
 		
 		readStatsFromFile();
@@ -1163,22 +881,16 @@ public class Game extends GameStatistics {
 		if(objGameStatisticsListener != null){ // overall stats send to stats panel		
 			String[] stringArray = {Integer.toString(gamesPlayedNumberHistory), 
 					Integer.toString(gamesWonNumberHistory), 
-					//doubleAccuracyRounder(((double)gamesWonNumberHistory/(double)gamesPlayedNumberHistory*100), 0.1d),
 					"0",
-					//Double.toString(averageTimeOfGameHistory)};
 					"999.9"};
 			objGameStatisticsListener.objectEmitted(new ObjListener(ObjListener.overallStatsStats, null, 0, 0, stringArray));
 		}
-		
-		
-		
 	}
 	
 	
 	public void remoteFinishGame(){
 		// used when new game interrupts existing game
 		// System.out.println("      Game. remoteFinishGame run");
-		
 		
 		gameFinished = true;		
 		gameWonLost = 0;
@@ -1187,16 +899,6 @@ public class Game extends GameStatistics {
 	}
 	
 
-	
-	public void testMessage(){
-		// this will check field after clicking. if it should be blank, number, mine or if it was clicked before
-		
-		System.out.println("      Game. Running testMessage. ");		
-	}
-	
-	
-	
-	
 	public void setStringListenerFieldRevealing(ButtonFieldListener listener){
 		this.textGameFieldRevealingListener = listener;		
 	}
@@ -1213,98 +915,5 @@ public class Game extends GameStatistics {
 		this.textGameGUITimerListener = listener;			
 	}
 		
-	
-	
-	public void testerNumberIntDouble(){
-		String testString;   // testing isInt and isDouble  String methods
 		
-		testString = "10";
-		if(isInt(testString))System.out.println("this is INT: " + testString);
-		else System.out.println("this is NOT   INT: " + testString);
-		
-		testString = "-10";
-		if(isInt(testString))System.out.println("this is INT: " + testString);
-		else System.out.println("this is NOT   INT: " + testString);
-		
-		testString = "0";
-		if(isInt(testString))System.out.println("this is INT: " + testString);
-		else System.out.println("this is NOT   INT: " + testString);
-		
-		testString = "1846565";
-		if(isInt(testString))System.out.println("this is INT: " + testString);
-		else System.out.println("this is NOT   INT: " + testString);
-		
-		testString = "18465f65";
-		if(isInt(testString))System.out.println("this is INT: " + testString);
-		else System.out.println("this is NOT   INT: " + testString);
-		
-		testString = "-18465f65";
-		if(isInt(testString))System.out.println("this is INT: " + testString);
-		else System.out.println("this is NOT   INT: " + testString);
-		System.out.println("");
-		
-		
-		// FLOATS
-		
-		testString = "-18465f65";
-		if (isDouble(testString))   System.out.println("this is double: " + testString);
-		else System.out.println("this is NOT   double: " + testString);
-		
-		testString = "-18465.f65";
-		if (isDouble(testString))   System.out.println("this is double: " + testString);
-		else System.out.println("this is NOT   double: " + testString);
-		
-		testString = "-18465.65";
-		if (isDouble(testString))   System.out.println("this is double: " + testString);
-		else System.out.println("this is NOT   double: " + testString);
-		
-		testString = "18465f65";
-		if (isDouble(testString))   System.out.println("this is double: " + testString);
-		else System.out.println("this is NOT   double: " + testString);
-		
-		testString = "1846565";
-		if (isDouble(testString))   System.out.println("this is double: " + testString);
-		else System.out.println("this is NOT   double: " + testString);
-		
-		testString = "18.46565";
-		if (isDouble(testString))   System.out.println("this is double: " + testString);
-		else System.out.println("this is NOT   double: " + testString);
-		
-		
-		testString = "18.465.65";
-		if (isDouble(testString))   System.out.println("this is double: " + testString);
-		else System.out.println("this is NOT   double: " + testString);
-		
-	}
-	
-	
-
-	/*
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
-		
-		System.out.println("      Game. PRE text field listener");
-		
-		if(textGameMethodListener != null ){
-			System.out.println("      Game. text field listener");
-
-			//textFieldListener.textEmitted("Hello\n");
-			
-			//textFieldListener.textEmitted(clicked.getText());
-			textGameMethodListener.textEmitted("Game. funkcja testowa");
-		}
-		
-		
-	}
-	*/
-	
-	
-	
-	
-	
-	
-
-	
 }

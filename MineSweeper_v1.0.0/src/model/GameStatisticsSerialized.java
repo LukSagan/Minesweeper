@@ -85,10 +85,4 @@ public class GameStatisticsSerialized implements Serializable{
 	}
 	
 	
-	
-	
-	
-	
-	
-	
 }

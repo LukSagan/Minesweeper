@@ -58,7 +58,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JTextArea;
 
 import controller.Controller;
 import model.GameGames1_5StatsListener;
@@ -68,85 +67,60 @@ import model.GameWonStats;
 import model.ObjListener;
 
 
+@SuppressWarnings("serial")
 public class MainFrame extends JFrame {
-	//dont forget  'extends JFrame' 
 	
 	private JFrame mainFrame;
 	private Toolbar toolbar;	
-	private JTextArea textArea;
 	private Minefield minefield;
 	private StatsPanel statsPanel;
 	
 	private Controller controller;
 	private int buttonHeightDifference = 10; // for fast adjusting whole window size, when finding good size of field
-	private int dummyHeightChanger = 40; // for fast changing window size for testing purposes
-	private final int WINDOW_HEIGHT_NO_STATS = 500 + 9*buttonHeightDifference;
-	private final int WINDOW_HEIGHT_WITH_STATS = 700 + 9*buttonHeightDifference + 40;// 700
+	private int dummyHeightChanger = 0; // for fast changing window size for testing purposes
+	private final int WINDOW_HEIGHT_NO_STATS = 500 + 9*buttonHeightDifference + dummyHeightChanger;
+	private final int WINDOW_HEIGHT_WITH_STATS = 700 + 9*buttonHeightDifference + 40 + dummyHeightChanger;// 700
 	private final int WINDOW_WITDTH = 470;
-	
-	//private TextPanel textPanel;     // temporary thing, fixing toolbars and jtextareas
-	
+
 	
 	
-	
-	
-	
-	
-		
 	public MainFrame(){
 		// whole is borderlayout with menu.  
 		// In border layout    'Page start'    timer, counter, etc.
 		// In border layout    'center'        pane with  minefield
 		// 
 		// pane with minefield  is GridBagLayout    (probably should be GridLayout = cells have same sizes, span only 1 row/column)
-				
+		// statsPanel is GridBagLayout
+		
 		super("Saper");    //calling superclass constructor
-		//mainFrame = mainframeAdress;		
-		
-		
 		setLayout(new BorderLayout());		
 		
 		toolbar = new Toolbar();
-		textArea = new JTextArea();
 		minefield = new Minefield();
 		statsPanel = new StatsPanel();		
 		controller = new Controller();
 		
-		listeners();
+		listeners();  // moving code below
 				
 		setJMenuBar(createMenuBar());
 		
-		
 		add(toolbar, BorderLayout.NORTH);
-		
-		
-		
-		//add(textArea, BorderLayout.CENTER);
 		add(minefield, BorderLayout.CENTER);
 		add(statsPanel, BorderLayout.PAGE_END);		
-		//statsPanel.setPreferredSize(new Dimension(WINDOW_WITDTH, 50));  // too low height (10) messed up showing items in window
 		statsPanel.setVisible(false);
 		
-		//add(textPanel, BorderLayout.CENTER);     // temporary thing, fixing toolbars and jtextareas
-
-		//setSize(700, 450);
-		//setSize(460, 500);
-		setSize(WINDOW_WITDTH, WINDOW_HEIGHT_NO_STATS);		
-		//setLocation(740, 240);
+		setSize(WINDOW_WITDTH, WINDOW_HEIGHT_NO_STATS);
 		setLocation(100, 100);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
 		setResizable(false);
-		setVisible(true);	
-		//this.defa
-		
-		
+		setVisible(true);		
 		
 		addWindowListener(new WindowListener(){
 			@Override
-			public void windowClosing(WindowEvent arg0) {
+			public void windowClosing(WindowEvent arg0) {  // to save game settings when closing game
 				// TODO Auto-generated method stub				
 				//System.out.println("Mainframe. closing program");
-				controller.writeGsmeSettingsToFile();
+				controller.writeGameSettingsToFile();
 			}
 			
 			@Override
@@ -182,113 +156,21 @@ public class MainFrame extends JFrame {
 		
 		
 		
-		URL url = MainFrame.class.getResource("/images/010_mine.png");
+		URL url = MainFrame.class.getResource("/images/010_mine.png");  // changing taskbar icon
 		ImageIcon icon = new ImageIcon(url);
 		setIconImage( icon.getImage() );
 		
-		
-		
-		
-		
-		//java.net.URL url = ClassLoader.getSystemResource("src/images/040_info_jdialog_icon.png");  // ???? maybe one time it will be useful
-		
-		// changing program icon in system taskbar
-		
-		// works
-		
-		/*
-		Toolkit kit = Toolkit.getDefaultToolkit();
-		//Image img = kit.createImage("src/images/010_mine.png");
-		Image img = kit.createImage("src/images/010_mine.png");
-		setIconImage( img );
-		*/
-		
-		
-		
-		/*
-		Toolkit kit = Toolkit.getDefaultToolkit();
-		//Image img = kit.createImage("src/images/010_mine.png");
-		
-		Image img = kit.createImage(    (ImageProducer)(new javax.swing.ImageIcon(getClass().getResource("src/images/010_mine.png")).getImage()  )  );
-		setIconImage( img );
-		*/
-		
-		
-		
-		
-		/*
-		
-		//String logoOneUrl = "jar:file:src/images/010_mine.png";
-		String logoOneUrl = "jar:file:D:/szkolne/JAVA/00 Udemy/eclipse/_workplace  moje/Miner v001/src/images/010_mine.png";
-		URL FileSysUrl = null;
-		
-		try {
-			FileSysUrl = new URL(logoOneUrl);
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		ImageIcon logoOne = new ImageIcon( FileSysUrl );
-		*/
-		
-		
-		
-		/*
-		//java.net.URL logoOneUrl = ClassLoader.getSystemResource("src/images/040_info_jdialog_icon.png");  // ???? maybe one time it will be useful
-		java.net.URL logoOneUrl = ClassLoader.getSystemResource("D:/szkolne/JAVA/00 Udemy/eclipse/_workplace  moje/Miner v001/src/images/040_info_jdialog_icon.png"); 
-		//java.net.URL logoOneUrl = getClass().getResource("src/images/010_mine.png");
-		System.out.println("MainFrame.  logoOneUrl: " + logoOneUrl);
-		//Icon logoOne = new ImageIcon(logoOneUrl );
-		
-		ImageIcon logoOne = new ImageIcon(logoOneUrl );
-		setIconImage( logoOne.getImage() );
-		*/
-		
-		
-		
-		/*
-		InputStream stream = this.getClass().getClassLoader().getResourceAsStream("src/images/010_mine.png");
-		setIconImage( stream );
-		*/
-		
-		
-		
-		
-		/*
-		Image img;
-		try {
-			//ImageIO.read(getClass().getResource("src/images/010_mine.png"));
-			img = kit.createImage(  ImageIO.read(getClass().getResource("src/images/010_mine.png"))  );
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		//Image img = kit.createImage(    (ImageProducer)(new javax.swing.ImageIcon(getClass().getResource("src/images/010_mine.png")).getImage()  )  );
-		setIconImage( img );
-		*/
-		
-		
-		/*
-		// ????  delete later after making writing to file
-		Point point = new Point();
-		point = getWindowPostion();
-		System.out.println("Mainframe. Window position read after conversion: " + point.x + "." + point.y);
-		*/
 	}
 
 
 	private JMenuBar createMenuBar() {
 		JMenuBar menuBar = new JMenuBar();
 		
-		// main menu bar consists of gameMenu, helpMenu
-		
-		
 		JMenu gameMenu = new JMenu ("Gra");
 		JMenuItem newGameItem = new JMenuItem("Nowa gra");
 		JMenuItem statisticsItem = new JMenuItem("Statystyki");
 		JMenuItem exitItem = new JMenuItem("Zakoñcz");
+		
 		
 		gameMenu.add(newGameItem);
 		gameMenu.addSeparator();
@@ -297,15 +179,14 @@ public class MainFrame extends JFrame {
 		gameMenu.add(exitItem);		
 		
 		
-		
 		JMenu helpMenu = new JMenu ("Pomoc");
 		JMenuItem helpItem = new JMenuItem("Wyœwietl pomoc");
 		JMenuItem aboutItem = new JMenuItem("O programie");
 		
+		
 		helpMenu.add(helpItem);
 		helpMenu.addSeparator();
 		helpMenu.add(aboutItem);
-		
 		
 		
 		menuBar.add(gameMenu);
@@ -317,24 +198,16 @@ public class MainFrame extends JFrame {
 			public void actionPerformed(ActionEvent ev) {			
 				//System.out.println("Mainframe. Clicked New game button from menu");
 				
-				
-				
-				
-				
 				if (controller.returnIfGameIsNotRunning()) {
 					System.out.println("Mainframe. Menu new game trying to start new game   Game allowed to start new game");
 					minefield.resetFieldsLooks();	
 					statsPanel.changeInfoRecordLabel("Powodzenia!");
 					controller.createNewGame();
 				}else{
-					//UIManager.put("JOptionPane.okButtonText", "yup");
 					JOptionPane pane = new JOptionPane();
-					
-					//pane.set.Xxxx(...); // Configure
-					//int reply = pane.showConfirmDialog((JFrame)null, "Czy na pewno chcesz przerwaæ aktualn¹ grê?", "Rozpoczynanie nowej gry", JOptionPane.YES_NO_OPTION);
 					Object[] options = {"Tak", "Nie"};
+					
 					@SuppressWarnings("static-access")
-					//int reply = pane.showOptionDialog((JFrame)null,
 					int reply = pane.showOptionDialog(mainFrame,
 							"Czy na pewno chcesz przerwaæ aktualn¹ grê?",
 							"Rozpoczynanie nowej gry",
@@ -344,7 +217,7 @@ public class MainFrame extends JFrame {
 					
 					switch(reply){
 						case JOptionPane.YES_OPTION: //System.out.println("Mainframe. NewGame menu item. Selected: YES. " + reply);
-							System.out.println("Mainframe. Menu new game trying to start new game   Game allowed to start new game");
+							//System.out.println("Mainframe. Menu new game trying to start new game   Game allowed to start new game");
 							controller.remoteFinishGame();
 							minefield.resetFieldsLooks();	
 							statsPanel.changeInfoRecordLabel("Powodzenia!");
@@ -356,19 +229,6 @@ public class MainFrame extends JFrame {
 							break;
 					}					
 				}
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
 			}
 		});
 		
@@ -391,8 +251,7 @@ public class MainFrame extends JFrame {
 				}				
 			}			
 		});
-		
-		
+				
 		
 		exitItem.addActionListener(new ActionListener(){  // actions after clicking "exit Item" in menu
 			@Override
@@ -405,7 +264,6 @@ public class MainFrame extends JFrame {
 					dispose();										
 				}else{
 					Object[] options = {"Tak", "Nie"};
-					//int reply = JOptionPane.showOptionDialog((JFrame)null,
 					int reply = JOptionPane.showOptionDialog(mainFrame,
 							"Czy na pewno chcesz przerwaæ aktualn¹ grê?",
 							"Koñczenie gry",
@@ -414,8 +272,7 @@ public class MainFrame extends JFrame {
 							null, options, options[0]);
 					switch(reply){
 						case JOptionPane.YES_OPTION: //System.out.println("Mainframe. NewGame Exit item. Selected: YES. " + reply);
-							//  exit program when game is running
-							
+							//  exit program when game is running							
 							System.exit(0); // close the program
 							dispose();							
 							break;
@@ -430,10 +287,8 @@ public class MainFrame extends JFrame {
 		});
 		
 		
-		
-		
-		
-		helpItem.addActionListener(new ActionListener(){  // actions after clicking "about Item" in menu
+		helpItem.addActionListener(new ActionListener(){  // actions after clicking "help  Item" in menu
+			@SuppressWarnings("static-access")
 			@Override
 			public void actionPerformed(ActionEvent ev) {				
 				//System.out.println("Mainframe. Clicked Display help button from menu");
@@ -457,193 +312,20 @@ public class MainFrame extends JFrame {
 						+ "\n"
 						+ "Powodzenia";
 				
-				//pane.showMessageDialog(mainFrame, "Informacje o autorze\n, licencji, itp", "O programie", JOptionPane.INFORMATION_MESSAGE);
 				pane.showMessageDialog(mainFrame, displayText, "Pomoc", JOptionPane.INFORMATION_MESSAGE);				
-			}
-			
+			}			
 		});
-		
-		
-		
 		
 		
 		aboutItem.addActionListener(new ActionListener(){  // actions after clicking "about Item" in menu
 			@Override
 			public void actionPerformed(ActionEvent ev) {				
 				//System.out.println("Mainframe. Clicked About button from menu");
+				//  wrapped in new class, its too big
 				
-				AboutDialog d = new AboutDialog(mainFrame);
-				
-				/*
-				
-				JOptionPane pane = new JOptionPane();
-				//pane.set.Xxxx(...); // Configure
-				//pane.setLocation(10, 10);
-				//pane.setBounds(10, 10, 200, 200);
-				//pane.showMessageDialog(minefield, "Informacje o autorze, licencji, itp", "O programie", JOptionPane.INFORMATION_MESSAGE);
-				
-				String displayText = "Wersja programu: "
-						+ "\n"
-						+ "Autor: £ukasz S.\n"
-						+ "\n"
-						//+ "Strona internetorwa: <html><a href=\"http://google.com/\">a link</a></html>\n"
-						+ "Strona internetorwa: http://google.com\n"
-						+ "\n"
-						+ "Licencja: \n"
-						+ "\n"
-						+ "Ten program jest dystrybuowany bez ¿adnej gwarancji";
-				
-				//pane.showMessageDialog(mainFrame, "Informacje o autorze, licencji, itp", "O programie", JOptionPane.INFORMATION_MESSAGE);
-				pane.showMessageDialog(mainFrame, displayText, "O programie", JOptionPane.INFORMATION_MESSAGE);
-				//pane.setLocation(10, 10);
-				//pane.setBounds(10, 10, 200, 200);
-				
-				//controller.writeGsmeSettingsToFile();    // ???? testing purposes only				
-				
-				//JOptionPane.showMessageDialog(null, "Informacje o autorze, licencji, itp", "O programie", JOptionPane.INFORMATION_MESSAGE);
-				
-				
-				*/
-				
-				
-				
-				
-				
-				
-				
-				
-				/*
-				final JDialog d = new JDialog();
-				d.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-				
-				String displayText = "Licencja: \n" // text to display in licence section
-						+ "\n"
-						+ "Ten program jest dystrybuowany bez ¿adnej gwarancji";
-				
-				
-				
-				
-				JLabel imageInfoLabel = new JLabel("image");
-				JLabel programVersionTLabel = new JLabel("Werjsa programu");
-				JLabel programVersionLabel = new JLabel();
-				JLabel dummyWidthLabel = new JLabel("width");
-				JLabel authorTlabel = new JLabel("Autor:");
-				JLabel authorlabel = new JLabel();
-				JLabel webPageTLabel = new JLabel("Strona internetowa");
-				JLabel webPageLabel = new JLabel();
-				JLabel licenseLabel = new JLabel(displayText);
-				JButton okButton = new JButton("OK");
-				
-				
-				d.setTitle("O programie");
-				
-				d.setLayout(new GridBagLayout());
-				GridBagConstraints constraOne = new GridBagConstraints();
-				
-				boolean shouldFill = true;
-				boolean shouldWeightX = true;
-				if (shouldFill) {
-		            //natural height, maximum width
-					//constraOne.fill = GridBagConstraints.HORIZONTAL;
-					//constraOne.fill = GridBagConstraints.CENTER;
-					constraOne.fill = GridBagConstraints.BOTH;
-					constraOne.anchor=GridBagConstraints.CENTER;
-				}
-				
-				if (shouldWeightX) {
-					constraOne.weightx = 0.5;
-				}
-				
-				
-				addItemToGridBagLayout(d, constraOne, 0, 0, imageInfoLabel, null, null);
-				addItemToGridBagLayout(d, constraOne, 1, 0, programVersionTLabel, null, null);
-				addItemToGridBagLayout(d, constraOne, 2, 0, programVersionLabel, null, null);
-				addItemToGridBagLayout(d, constraOne, 3, 0, dummyWidthLabel, null, null);
-				
-				addItemToGridBagLayout(d, constraOne, 1, 1, authorTlabel, null, null);
-				addItemToGridBagLayout(d, constraOne, 2, 1, authorlabel, null, null);
-				
-				addItemToGridBagLayout(d, constraOne, 1, 2, webPageTLabel, null, null);
-				addItemToGridBagLayout(d, constraOne, 2, 2, webPageLabel, null, null);
-				
-				addItemToGridBagLayout(d, constraOne, 1, 3, licenseLabel, null, null);
-				
-				addItemToGridBagLayout(d, constraOne, 1, 4, null, okButton, null);
-								
-				okButton.addActionListener(this);
-				
-				
-				//d.add( programVersionTLabel );
-				//d.add( authorTlabel );
-				
-				
-				d.pack();				
-				//d.setSize(dialogSizeX, dialogSizeY);
-				d.setModal(true);
-
-				
-				//d.setResizable(false);	
-				d.setLocationRelativeTo(mainFrame);
-				d.setVisible(true);
-				
-				*/
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				/*
-				final JOptionPane pane = new JOptionPane();
-				//final JDialog d = pane.createDialog((JFrame)null, "Title");				
-				final JDialog d = pane.createDialog(mainFrame, "Title");
-				//d.setLocation(10,10)f3;
-				//d.setLocationRelativeTo(mainFrame);				
-				
-				d.setVisible(true);
-				*/
-				
-				/*
-				// Set a 2 second timer
-				new Thread(new Runnable() {
-				    @Override
-				    public void run() {
-				        try {
-				            Thread.sleep(2000);
-				        } catch (Exception e) {
-				        }
-				        d.dispose();
-				    }
-				
-				}).start();
-				*/
-				
-				
-				
-				
-				
-				
-				/*
-				JOptionPane pane = new JOptionPane();
-				//pane.set.Xxxx(...); // Configure
-				//pane.setLocation(10, 10);
-				//pane.setBounds(10, 10, 200, 200);
-				pane.showMessageDialog((JFrame)null, "Informacje o autorze, licencji, itp", "O programie", JOptionPane.INFORMATION_MESSAGE);
-				pane.setLocation(10, 10);
-				//pane.setBounds(10, 10, 200, 200);
-				*/				
-
-				
-			}
-			
+				new AboutDialog(mainFrame);				
+			}			
 		});
-		
-		
 		
 		
 		return menuBar;
@@ -652,11 +334,9 @@ public class MainFrame extends JFrame {
 	
 	public void showWonLostMessage(int messageWonOrLost){
 		// messageWonOrLost  tells  to show message won or message lost  or message record
-
+		// this is autocloseable window
 		//System.out.println("Mainframe. showWonLostMessage   Game lost/won/record");
 		
-		//final JOptionPane pane = new JOptionPane();			
-		//final JDialog d = pane.createDialog(mainFrame, "Koniec gry");
 		final JDialog d = new JDialog();
 		d.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		
@@ -667,32 +347,23 @@ public class MainFrame extends JFrame {
 		
 		if( messageWonOrLost == ObjListener.messageGameLost ){
 			//System.out.println("Mainframe. show message   Game lost  " + messageWonOrLost);			
-			//d = pane.createDialog(mainFrame, "Przegrana");
 			d.setTitle("Przegrana");
 			
-			//scaleImageIco("src/images/031_loser_dead_fish.png", 100, 100)
-			//d.add(new JLabel(new ImageIcon(ImageIO.read(getClass().getResourceAsStream(IMAGE_URL)))));
-			//d.add(new JLabel(new ImageIcon( toolbar.scaleImageIco("src/images/031_loser_dead_fish.png", 100, 100)  )    ));
 			imageLabel.setIcon(toolbar.scaleImageIco("/images/031_loser_dead_fish.png", imageSizeToResize, imageSizeToResize));	
 		}else if ( messageWonOrLost == ObjListener.messageGameWon ){
 			//System.out.println("Mainframe. show message   Game won  " + messageWonOrLost);
-			//d = pane.createDialog(mainFrame, "Wygrana");
 			d.setTitle("Wygrana");
-			//imageLabel.setIcon(toolbar.scaleImageIco("src/images/030_winner_cup.png", imageSizeToResize, imageSizeToResize));
 			imageLabel.setIcon(toolbar.scaleImageIco("/images/030_winner_cup.png", imageSizeToResize, imageSizeToResize));
 		}else{ // game won and record
 			//System.out.println("Mainframe. show message   Game won  + new record  " + messageWonOrLost);
-			//d = pane.createDialog(mainFrame, "Rekord!");
-			d.setTitle("Rekord!");
-			//imageLabel.setIcon(toolbar.scaleImageIco("src/images/030_winner_cup.png", imageSizeToResize, imageSizeToResize));			
+			d.setTitle("Rekord!");			
 			imageLabel.setIcon(toolbar.scaleImageIco("/images/030_winner_cup.png", imageSizeToResize, imageSizeToResize));
 		}
 		
 		
 		d.add( imageLabel );
 		
-		
-		
+				
 		// Set a 2 second timer
 		new Thread(new Runnable() {    // autoclosing pop up
 			@Override
@@ -702,82 +373,20 @@ public class MainFrame extends JFrame {
 				} catch (Exception e) {
 				}
 				d.dispose();
-				//d.setAlwaysOnTop(false);
-				/*
-				mainFrame.setFocusable(true);
-				//mainFrame.setEnabled(true);
-				*/
-			}
-		
+			}		
 		}).start();
 		
 		
 		d.pack();		
 		d.setSize(dialogSizeX, dialogSizeY);
-		//percenWonLabel.setMinimumSize(new Dimension(40, 10));
-		//d.setBounds(100, 100, 100, 100);
-		d.setModal(true);
-		//d.setAlwaysOnTop(true);		
-		/*
-		mainFrame.setFocusable(false);
-		//mainFrame.setEnabled(false);
-		//this.setEnabled(false);   // works, but lets keep it other way for more visualibity
-		*/
-		
-		d.setResizable(false);
-		//d.setLocationRelativeTo(mainFrame);		
+		d.setModal(true);		
+		d.setResizable(false);	
 		d.setLocationRelativeTo(minefield);
 		d.setVisible(true);
-		
-		
-		
-		
-		/*
-		final JOptionPane pane = new JOptionPane();			
-		//final JDialog d = pane.createDialog(mainFrame, "Koniec gry");
-		final JDialog d;
-		
-		if( messageWonOrLost == ObjListener.messageGameLost ){			
-			//System.out.println("Mainframe. show message   Game lost  " + messageWonOrLost);
-			
-			d = pane.createDialog(mainFrame, "Przegrana");
-		}else{
-			
-			
-			if( messageWonOrLost == ObjListener.messageGameWon ){
-				//System.out.println("Mainframe. show message   Game won  " + messageWonOrLost);
-				d = pane.createDialog(mainFrame, "Wygrana");
-				
-			}else{
-				//System.out.println("Mainframe. show message   Game won  + new record  " + messageWonOrLost);
-				d = pane.createDialog(mainFrame, "Rekord!");
-			}
-				
-		}
-		
-		
-		// Set a 2 second timer
-		new Thread(new Runnable() {
-		    @Override
-		    public void run() {
-		        try {
-		            Thread.sleep(700);
-		        } catch (Exception e) {
-		        }
-		        d.dispose();
-		    }
-		
-		}).start();
-		
-		d.setVisible(true);
-		*/
 		
 	}
 	
 	
-	
-	
-
 	
 	public Point getWindowPostion(){ // so it can be used outside Mainframe
 		/*
@@ -792,7 +401,6 @@ public class MainFrame extends JFrame {
 	public void getFrameReference(JFrame frameReference){ // 
 		mainFrame = frameReference;	
 		statsPanel.getFrameReference(mainFrame);
-		
 	}
 	
 	public void addItemToGridBagLayout(JDialog dialog, GridBagConstraints constraOne, int x, int y, JLabel someLabel, JButton someButton, JEditorPane ep){
@@ -818,32 +426,28 @@ public class MainFrame extends JFrame {
 				
 				
 				minefield.setStringListenerLeftMouseClick(new ButtonFieldListener() {
-					// listener to any minefield button click. should call game class methods
+					// listener to any minefield left button click. should call game class methods
 
 					@Override
 					public void textEmitted(String text) {
 						// TODO Auto-generated method stub
 						
-						//System.out.println("Mainframe. This button was clicked: " + text);
+						//System.out.println("Mainframe. This field was clicked: " + text);
 						controller.fieldLeftClickedSendToGame(text);
-					}
-					
-					
+					}					
 				});
 				
 				
 				minefield.setStringListenerRightMouseClick(new ButtonFieldListener() {
-					// listener to any minefield button click. should call game class methods
+					// listener to any minefield right button click. should call game class methods
 
 					@Override
 					public void textEmitted(String text) {
 						// TODO Auto-generated method stub
 						
-						//System.out.println("Mainframe. This button was clicked: " + text);
+						//System.out.println("Mainframe. This field was right clicked: " + text);
 						controller.fieldRightClickedSendToGame(text);
 					}
-					
-					
 				});
 				
 				
@@ -856,13 +460,7 @@ public class MainFrame extends JFrame {
 						System.out.println("Mainframe. StatsPanel listener of OBJECT");		
 						
 						switch(object.getCode()){
-						case ObjListener.checkIfGameIsOngoing: statsPanel.tryToResetGamesStatsMessages(controller.returnIfGameIsNotRunning());
-							/*
-						if (controller.returnIfGameIsStillOngoing()) {
-								statsPanel.showMessageRequestResetStats();
-							}else{
-								statsPanel.showMessageCannotResetStats();					
-							}				*/			
+						case ObjListener.checkIfGameIsOngoing: statsPanel.tryToResetGamesStatsMessages(controller.returnIfGameIsNotRunning());		
 							break;
 						case ObjListener.sendRequestResetStatistics: controller.resetGamesStatistics();							
 							break;
@@ -870,13 +468,10 @@ public class MainFrame extends JFrame {
 						
 						}// end switch for obj listeners
 						
-						
 					}
 				});
 				
-				
-				
-				
+								
 				
 				toolbar.setStringListenerToolbarNewgame(new ButtonFieldListener() {
 					// listener to toolbar new game button. new game resets minefield look and game fields 
@@ -890,19 +485,10 @@ public class MainFrame extends JFrame {
 							//System.out.println("Mainframe. Toolbar listener trying to start new game   Game allowed to start new game");
 							minefield.resetFieldsLooks();	
 							statsPanel.changeInfoRecordLabel("Powodzenia!");
-							controller.createNewGame(); //
-							//controller = new Controller();    // this doesnt change controller reference in minefield listener
+							controller.createNewGame();
 						}
 					}
 				});
-				
-				
-				
-				
-				
-				
-				
-				
 				
 				
 				
@@ -917,6 +503,7 @@ public class MainFrame extends JFrame {
 						minefield.changeMinefieldFieldLook(text);
 					}			
 				});
+				
 				
 				controller.setIntListener(new GameNewWonLostListener(){
 
@@ -942,8 +529,7 @@ public class MainFrame extends JFrame {
 				});
 				
 				
-				toolbar.changeMinesGUITimer("000");
-				
+				toolbar.changeMinesGUITimer("000");				
 				controller.setStringListenerGameGUITimer(new ButtonFieldListener() {
 					// listener to any controller action. should call minefield class methods
 
@@ -955,8 +541,7 @@ public class MainFrame extends JFrame {
 						toolbar.changeMinesGUITimer(text);
 					}			
 				});
-				
-				
+								
 				
 				controller.setArrayListenerGameStats5Games(new GameGames1_5StatsListener(){
 					@Override
@@ -967,6 +552,7 @@ public class MainFrame extends JFrame {
 						statsPanel.changeGames1_5Label(set);
 					}	
 				});
+				
 				
 				controller.setStringListenerGameStatsNewRecord(new ButtonFieldListener(){
 					@Override
@@ -980,8 +566,6 @@ public class MainFrame extends JFrame {
 				});
 				
 				
-				
-				
 				controller.setIntListernerGameOptionsWindowPosX(new GameNewWonLostListener(){
 					@Override
 					public void numberEmitted(int number) {
@@ -991,6 +575,7 @@ public class MainFrame extends JFrame {
 					}
 				});		
 				
+				
 				controller.setIntListernerGameOptionsWindowPosY(new GameNewWonLostListener(){
 					@Override
 					public void numberEmitted(int number) {
@@ -999,6 +584,7 @@ public class MainFrame extends JFrame {
 						//System.out.println("Mainframe. Controller listener WindowPosY " + number);
 					}
 				});		
+				
 				
 				controller.setIntListernerGameOptionsStatsWindow(new GameNewWonLostListener(){
 					@Override
@@ -1045,9 +631,6 @@ public class MainFrame extends JFrame {
 						
 					}			
 				});
-				
-				
-				
 				
 				
 				

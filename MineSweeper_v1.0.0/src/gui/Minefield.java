@@ -55,8 +55,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
-//sysout spaces  
-
+@SuppressWarnings("serial")
 public class Minefield extends JPanel implements ActionListener, MouseListener {
 	
 	private ButtonFieldListener textMinefieldFieldListenerLeftMouseClick;
@@ -68,20 +67,16 @@ public class Minefield extends JPanel implements ActionListener, MouseListener {
 	
 	private boolean shouldFill = true;
 	private boolean shouldWeightX = true;
-	private boolean RIGHT_TO_LEFT = false;
 	
 	public int testInt;    // added it to check if MainFrame can see it  ????
 	public int intToolbarTest;
 	private int[] defaultMineBackground = {200, 200, 200};      // RGB codes 
-	
-	private JButton menuButton;
-	
+	private int fieldImageSize = 25; // width and height of mine/flag image that is displayed inside field
 	
 	public Minefield(){
 		// creates minefield fields
 		
-		super();
-		
+		super();		
 		setLayout(new GridBagLayout());
 		GridBagConstraints constraOne = new GridBagConstraints();
 		
@@ -98,13 +93,8 @@ public class Minefield extends JPanel implements ActionListener, MouseListener {
 		for (int i=0; i<MINEFIELD_SIZE; i++){
 			for (int j=0; j<MINEFIELD_SIZE; j++){
 				
-				//JLabel lbl = new JLabel( i + "." + j);
-				//JButton lbl = new JButton( i + "." + j);        // just a button name
 				JButton lbl = new JButton("");
-				//JButton lbl = new JButton( "101" );        // just a button name ????
-				
-				if ( (i == 0) && (j == 0) ){
-					
+				if ( (i == 0) && (j == 0) ){					
 					if (shouldWeightX) {
 						constraOne.weightx = 0.5;
 					}
@@ -125,46 +115,13 @@ public class Minefield extends JPanel implements ActionListener, MouseListener {
 				lbl.addActionListener(this);
 				lbl.addMouseListener(this);
 				
-				
-				
-				
 				buttonsReferences[i][j] = lbl;
-				
-				
-				//System.out.println("i: " + i + "  j: " + j);
+								
+				//System.out.println("Minefield. Creating and adding button fo minefield. i: " + i + "  j: " + j);
 				
 			}			
 		}
-		
-		
-		// test to check if I really store references to dynamically created buttons/fields
-		/*
-		JButton test1 = buttonsReferences[2][2];
-		System.out.println("Button was clicked: " + test1.getText());
-		*/
-		
-		
-		
-		
 	}	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	public void testMethod(){
-		
-		System.out.println("  Minefield. testMethod  wiadomosc testowa");
-	}
 	
 	
 	
@@ -176,35 +133,21 @@ public class Minefield extends JPanel implements ActionListener, MouseListener {
 		//System.out.println("Minefield. Button was clicked: " + clicked.getText());
 		
 		
-		String clickedField = "empty";
-		
-		//clicked.setEnabled(false);    // ????
+		String clickedField = "empty";		
 		for (int i=0; i<MINEFIELD_SIZE; i++){     
 			// looking for button coordinates
 			for (int j=0; j<MINEFIELD_SIZE; j++){
 				if (clicked == buttonsReferences[i][j]){
 					//System.out.println("  Minefield. Found button in references. Coordinates: " + i + "."  + j);
 					clickedField = i + "."  + j;
-					// ????
-					//buttonsReferences[i][j].setEnabled(false);    // this 'disables' all buttons
-					
-					//buttonsReferences[i][j].setFocusable(false);
-					//buttonsReferences[i][j].setSelected(true);
-					//buttonsReferences[i][j].setBorderPainted(false);
-					//buttonsReferences[i][j].setOpaque(false);
-					
-					
-					//buttonsReferences[8][8].setEnabled(false);    // this works on single button
 					break;
 				}	
 			}			
 		}
-		
-		
+				
 		
 		if(textMinefieldFieldListenerLeftMouseClick != null ){
-			//System.out.println("      Minefield. Hello button was clicked");
-			
+			//System.out.println("      Minefield. Hello button was clicked");			
 			textMinefieldFieldListenerLeftMouseClick.textEmitted(clickedField);
 		}			
 	}
@@ -224,35 +167,27 @@ public class Minefield extends JPanel implements ActionListener, MouseListener {
 		
 
 		if (code.length() == 5){   // blanks, mines, numbers
-			if (type.charAt(0) == "0".charAt(0)){	// blanks
+			if (type.charAt(0) == "0".charAt(0)){	// blank fields
 				// this is embedded in IF's for now. later on probably just 3 lines of code
 				
 				buttonsReferences[i][j].setBackground(new Color(255,255,255));
 				
 			}else if (type.charAt(0) == "9".charAt(0)){   // mines
 				//System.out.println("  Minefield. Changing button name to type of field: " + type);
-				//buttonsReferences[i][j].setIcon(scaleImageIco("src/images/020_minefield_mine.png", 20, 20));    //49x35
-				buttonsReferences[i][j].setIcon(scaleImageIco("/images/020_minefield_mine.png", 20, 20));    //49x35
+				buttonsReferences[i][j].setIcon(scaleImageIco("/images/020_minefield_mine.png", fieldImageSize, fieldImageSize));    //49x35
 			}else if (type.charAt(0) == "r".charAt(0)){   // clicked mine, game end
 				//System.out.println("  Minefield. Changing button name to type of field: " + type);
-
-				//buttonsReferences[i][j].setIcon(scaleImageIco("src/images/022_minefield_mine_clicked.png", 20, 20));    //49x35
-				buttonsReferences[i][j].setIcon(scaleImageIco("/images/022_minefield_mine_clicked.png", 20, 20));    //49x35
+				buttonsReferences[i][j].setIcon(scaleImageIco("/images/022_minefield_mine_clicked.png", fieldImageSize, fieldImageSize));    //49x35
 			}else if (type.charAt(0) == "g".charAt(0)){   // clicked mine, game end
 				//System.out.println("  Minefield. Changing button name to type of field: " + type);
-
-				//buttonsReferences[i][j].setIcon(scaleImageIco("src/images/024_minefield_mine_not_clicked.png", 20, 20));    //49x35
-				buttonsReferences[i][j].setIcon(scaleImageIco("/images/024_minefield_mine_not_clicked.png", 20, 20));    //49x35	
-			} else{    // numbers
+				buttonsReferences[i][j].setIcon(scaleImageIco("/images/024_minefield_mine_not_clicked.png", fieldImageSize, fieldImageSize));    //49x35	
+			} else{    // number fields
 				
 				
 				//System.out.println("  Minefield. Changing button name to type of field: " + type);
-
 				switch(  Integer.parseInt(  String.valueOf(type.charAt(0))  )  ){
 					case 1:
 						buttonsReferences[i][j].setForeground(Color.GREEN);
-						//buttonsReferences[i][j].setText("<html><font color = red>3</font></html>");
-						//buttonsReferences[i][j].setText("<html><p style='color:red'>This is a paragraph.</p></html>");
 						break;
 					case 2:
 						buttonsReferences[i][j].setForeground(Color.BLUE);
@@ -277,10 +212,8 @@ public class Minefield extends JPanel implements ActionListener, MouseListener {
 						break;				
 				}
 				
-				
 				buttonsReferences[i][j].setBackground(new Color(255,255,255));
-				buttonsReferences[i][j].setFont(new Font("Dialog", Font.BOLD, 20));
-				//button.setFont(new Font("Arial", Font.BOLD, 20));
+				buttonsReferences[i][j].setFont(new Font("Dialog", Font.BOLD, 25));
 				buttonsReferences[i][j].setText(type);
 				
 			}
@@ -291,8 +224,7 @@ public class Minefield extends JPanel implements ActionListener, MouseListener {
 				// flag field
 				
 				//System.out.println("  Minefield. Flagging field");
-				//buttonsReferences[i][j].setIcon(scaleImageIco("src/images/021_minefield_flag.png", 20, 20));    //49x35
-				buttonsReferences[i][j].setIcon(scaleImageIco("/images/021_minefield_flag.png", 20, 20));    //49x35
+				buttonsReferences[i][j].setIcon(scaleImageIco("/images/021_minefield_flag.png", fieldImageSize, fieldImageSize));    //49x35
 			} else if (code.charAt(5) == "0".charAt(0)){
 				// unflag field
 				
@@ -300,19 +232,9 @@ public class Minefield extends JPanel implements ActionListener, MouseListener {
 				buttonsReferences[i][j].setIcon(null);
 			} else if (code.charAt(5) == "r".charAt(0)){
 				// incorrectly flagged field
-				
-				//buttonsReferences[i][j].setIcon(scaleImageIco("src/images/023_minefield_flag_incorrect.png", 20, 20));    //49x35
-				buttonsReferences[i][j].setIcon(scaleImageIco("/images/023_minefield_flag_incorrect.png", 20, 20));    //49x35
-			}
-			
-			
-			
-			
-		}
-		
-		
-		
-		
+				buttonsReferences[i][j].setIcon(scaleImageIco("/images/023_minefield_flag_incorrect.png", fieldImageSize, fieldImageSize));    //49x35
+			}			
+		}		
 	}
 	
 	
@@ -323,7 +245,6 @@ public class Minefield extends JPanel implements ActionListener, MouseListener {
 			for (int j=0; j<MINEFIELD_SIZE; j++){				
 				buttonsReferences[i][j].setText(null);
 				buttonsReferences[i][j].setIcon(null);
-				//buttonsReferences[i][j].setEnabled(true);  // ????
 				buttonsReferences[i][j].setBackground(new Color(defaultMineBackground[0],defaultMineBackground[0],defaultMineBackground[0]));
 				
 			}			
@@ -335,16 +256,12 @@ public class Minefield extends JPanel implements ActionListener, MouseListener {
 	private ImageIcon scaleImageIco(String imgIcoLocation, int resizedW, int resizedH){
 		// method for resizing images (image icons). Used for graphic icons. Reworked method from internet
 		
-		//ImageIcon imageIcon = new ImageIcon(imgIcoLocation); // load the image to a imageIcon
-		//ImageIcon imageIcon = new ImageIcon(  MainFrame.class.getResource(  imgIcoLocation)  ); // load the image to a imageIcon
 		ImageIcon imageIcon = new ImageIcon(  Minefield.class.getResource(  imgIcoLocation)  ); // load the image to a imageIcon
 		Image image = imageIcon.getImage(); // transform it 
 		Image newimg = image.getScaledInstance(resizedW, resizedH,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
-		//imageIcon = new ImageIcon(newimg);  // transform it back
 		
 	    return new ImageIcon(newimg); // returns after transforming it back
 	}
-
 
 
 
@@ -372,10 +289,6 @@ public class Minefield extends JPanel implements ActionListener, MouseListener {
 			
 			if(textMinefieldFieldListenerRightMouseClick != null ){
 				//System.out.println("      Minefield. Hello button was clicked");
-
-				//textFieldListener.textEmitted("Hello\n");
-				
-				//textFieldListener.textEmitted(clicked.getText());
 				textMinefieldFieldListenerRightMouseClick.textEmitted(clickedField);
 			}
 		}
@@ -420,11 +333,6 @@ public class Minefield extends JPanel implements ActionListener, MouseListener {
 		this.textMinefieldFieldListenerRightMouseClick = listener;
 		
 	}
-	
-	
-	
-	
-	
 	
 	
 	

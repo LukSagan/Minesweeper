@@ -46,7 +46,6 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -60,61 +59,47 @@ import javax.swing.event.AncestorListener;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
+@SuppressWarnings("serial")
 public class AboutDialog extends JDialog implements ActionListener {
-	
-	private JDialog thisDialog;
-	
 	
 	public AboutDialog(JFrame mainFrame) {
 		// TODO Auto-generated constructor stub
 		super();
 		
-		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);		
 		
-		
-		String displayText = "Licencja: \n" // text to display in license section
+		String webPageLink = "https://github.com/LukSagan/Minesweeper";
+		String displayLicenseText = "Licencja: \n" // text to display in license section
 				+ ""
 				+ "Licencja GNU General Public License.\n"
-				+ "Ten program jest dystrybuowany bez ¿adnej gwarancji.";
-		
-		
-		
+				+ "Ten program jest dystrybuowany bez ¿adnej gwarancji.";		
 		
 		JLabel imageInfoLabel = new JLabel();
 		JLabel programVersionTLabel = new JLabel("Wersja programu");
-		JLabel programVersionLabel = new JLabel("1.0.0");
+		JLabel programVersionLabel = new JLabel("1.0.1");
 		JLabel dummyWidthLabel = new JLabel("");
 		JLabel authorTlabel = new JLabel("Autor:");
 		JLabel authorlabel = new JLabel("£ukasz S.");
 		JLabel webPageTLabel = new JLabel("Strona internetowa");
-		//JLabel webPageLabel = new JLabel();
-		
-		/*
-		JEditorPane webPagePane = new JEditorPane("text/html", "<html><body style=\"\">" //
-	            + "<a href=\"https://github.com/LukSagan/Minesweeper\">GitHub LukSagan</a>" //
-	            + "</body></html>");
-		*/
 		
 		JEditorPane webPagePane = new JEditorPane("text/html", "<html><body style=\"\">" //
 	            + "<a href=\"\">GitHub LukSagan</a>" //
 	            + "</body></html>");
 		
-		//JLabel licenseLabel = new JLabel(displayText);
-		JTextArea licenseArea = new JTextArea(displayText);
+		JTextArea licenseArea = new JTextArea(displayLicenseText);
 		JButton okButton = new JButton("OK");
 		
 		
 		setTitle("O programie");
 		
+		// adding items to Dialog 
 		setLayout(new GridBagLayout());
 		GridBagConstraints constraOne = new GridBagConstraints();
+		
 		
 		boolean shouldFill = true;
 		boolean shouldWeightX = true;
 		if (shouldFill) {
-            //natural height, maximum width
-			//constraOne.fill = GridBagConstraints.HORIZONTAL;
-			//constraOne.fill = GridBagConstraints.CENTER;
 			constraOne.fill = GridBagConstraints.BOTH;
 			constraOne.anchor=GridBagConstraints.CENTER;
 		}
@@ -130,13 +115,6 @@ public class AboutDialog extends JDialog implements ActionListener {
 		imageInfoLabel.setMinimumSize(new Dimension(width, height));
 		imageInfoLabel.setMaximumSize(new Dimension(width, height));
 		imageInfoLabel.setPreferredSize(new Dimension(width, height));
-		
-		//URL url = MainFrame.class.getResource("/images/010_mine.png");
-		//ImageIcon icon = new ImageIcon(url);		
-		//ImageIcon icon = new ImageIcon(MainFrame.class.getResource("/images/040_info_jdialog_icon.png"));		
-		
-		//imageInfoLabel.setIcon(  new ImageIcon("src/images/040_info_jdialog_icon.png")  );
-		//imageInfoLabel.setIcon(  new ImageIcon(MainFrame.class.getResource("/images/040_info_jdialog_icon.png"))  );
 		imageInfoLabel.setIcon(  new ImageIcon(AboutDialog.class.getResource("/images/040_info_jdialog_icon.png"))  );
 		constraOne.insets = new Insets(0,10,0,0);  // padding    top, left, bottom, right
 		addItemToGridBagLayout(constraOne, 0, 0, imageInfoLabel, null, null, null);
@@ -146,17 +124,13 @@ public class AboutDialog extends JDialog implements ActionListener {
 		
 		addItemToGridBagLayout(constraOne, 1, 0, programVersionTLabel, null, null, null);
 		addItemToGridBagLayout(constraOne, 2, 0, programVersionLabel, null, null, null);
-		//constraOne.weightx = 1.0;
 		addItemToGridBagLayout(constraOne, 3, 0, dummyWidthLabel, null, null, null);
-		//constraOne.weightx = 1.0;
 		
 		addItemToGridBagLayout(constraOne, 1, 1, authorTlabel, null, null, null);
 		addItemToGridBagLayout(constraOne, 2, 1, authorlabel, null, null, null);
 		
 		addItemToGridBagLayout(constraOne, 1, 2, webPageTLabel, null, null, null);
-		//addItemToGridBagLayout(constraOne, 2, 2, webPageLabel, null, null, null);
 		webPagePane.setEditable(false);
-		//webPagePane.setBackground(label.getBackground());
 		webPagePane.setBackground(this.getBackground());
 		addItemToGridBagLayout(constraOne, 2, 2, null, null, webPagePane, null);
 		
@@ -179,13 +153,9 @@ public class AboutDialog extends JDialog implements ActionListener {
 		okButton.setMinimumSize(new Dimension(width, height));
 		okButton.setMaximumSize(new Dimension(width, height));
 		okButton.setPreferredSize(new Dimension(width, height));	
-		//constraOne.weighty = 1.0;   //request any extra vertical space
-		//constraOne.anchor = GridBagConstraints.PAGE_END; //bottom of space
 		int vertPadding = 120;
 		constraOne.insets = new Insets(0,vertPadding,0,vertPadding);  // padding    top, left, bottom, right
-		addItemToGridBagLayout(constraOne, 1, 4, null, okButton, null, null);
-		//okButton.focus
-		
+		addItemToGridBagLayout(constraOne, 1, 4, null, okButton, null, null);		
 		
 		
 		
@@ -195,27 +165,23 @@ public class AboutDialog extends JDialog implements ActionListener {
 			{
 				if (   e.getEventType().equals(HyperlinkEvent.EventType.ACTIVATED)    ){
 					
-					System.out.println("test");
-					//ProcessHandler.launchUrl(e.getURL().toString()); // roll your own link launcher or use Desktop if J6+
+					//System.out.println("AbourDialog. Hyperlink listener");
 					
 					if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
 						try {
-							Desktop.getDesktop().browse(new URI("https://github.com/LukSagan/Minesweeper"));
+							Desktop.getDesktop().browse(new URI(webPageLink));
 						} catch (IOException | URISyntaxException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
-					}
-					
-					
-					
+					}					
 				}
 			}
 	    });
 		
 		
 		
-		okButton.addAncestorListener(new AncestorListener() {
+		okButton.addAncestorListener(new AncestorListener() { // for making focus on OK button
 
 			@Override
 			public void ancestorRemoved(AncestorEvent arg0) {
@@ -243,22 +209,12 @@ public class AboutDialog extends JDialog implements ActionListener {
 		okButton.addActionListener(this);
 		
 		
-		
 		pack();				
 		setSize(400, 210); // width, height
-		setModal(true);
-
-		
+		setModal(true);		
 		setResizable(false);	
 		setLocationRelativeTo(mainFrame);
 		setVisible(true);
-		
-		/*  doesnt work
-		getRootPane().setDefaultButton(okButton);
-		okButton.requestFocus();
-		*/
-
-		
 	}
 	
 	
@@ -278,8 +234,6 @@ public class AboutDialog extends JDialog implements ActionListener {
 	}
 	
 	
-	
-
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub		

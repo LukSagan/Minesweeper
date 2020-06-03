@@ -50,13 +50,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+@SuppressWarnings("serial")
 public class Toolbar extends JPanel implements ActionListener {
-	
-	/*
-	private JButton menuButton;
-	private JButton helpButton;
-	private JButton statisticsButton;
-	*/
 	
 	private JLabel minesGUIIco;	
 	private JLabel minesGUICounter;
@@ -81,30 +76,24 @@ public class Toolbar extends JPanel implements ActionListener {
 		
 				
 		final int minesGUIIcoSize = 50;
-		//minesGUIIco.setIcon(scaleImageIco("src/images/010_mine.png", minesGUIIcoSize, minesGUIIcoSize));
 		minesGUIIco.setIcon(scaleImageIco("/images/010_mine.png", minesGUIIcoSize, minesGUIIcoSize));
 		
 		minesGUICounter.setPreferredSize(new Dimension(70, 100));
-		//minesGUICounter.setFont(new Font("Dialog", Font.BOLD, 30));
 		minesGUICounter.setFont(new Font("Arial", Font.BOLD, 30));
 		minesGUICounter.setHorizontalAlignment(JLabel.RIGHT);
 		
-		//minesFaceIco.setIcon(new ImageIcon("src/images/001_face_happy.png"));
-		//minesGUIFaceIco.setIcon(scaleImageIco("src/images/001_face_happy.png", minesGUIFaceIcoSize, minesGUIFaceIcoSize));
 		minesGUIFaceIco.setIcon(scaleImageIco("/images/001_face_happy.png", minesGUIFaceIcoSize, minesGUIFaceIcoSize));
 		minesGUIFaceIco.setToolTipText("Nowa gra");
 		
 		minesGUIFaceIco.setOpaque(false);
 		minesGUIFaceIco.setContentAreaFilled(false);
 		minesGUIFaceIco.setBorderPainted(false);
-		//minesGUITimerIco.setIcon(scaleImageIco("src/images/015_clock.png", minesGUIIcoSize, minesGUIIcoSize));
 		minesGUITimerIco.setIcon(scaleImageIco("/images/015_clock.png", minesGUIIcoSize, minesGUIIcoSize));
 		
 		int topPad = 0;
 		int leftPad = 0;
 		int bottomPad = 0;
 		int rightPad = 10;		
-		//minesGUITimer.setPreferredSize(new Dimension(60, 100));
 		minesGUITimer.setPreferredSize(new Dimension(60 + leftPad + rightPad, 100 + topPad + bottomPad));
 		minesGUITimer.setBorder(new EmptyBorder(0,leftPad,0,rightPad));//top,left,bottom,right		
 		minesGUITimer.setFont(new Font("Arial", Font.BOLD, 30));
@@ -118,8 +107,7 @@ public class Toolbar extends JPanel implements ActionListener {
 		add(minesGUICounter);
 		add(minesGUIFaceIco);
 		add(minesGUITimerIco);
-		add(minesGUITimer);
-		
+		add(minesGUITimer);		
 		
 		validate();
 	}
@@ -130,13 +118,10 @@ public class Toolbar extends JPanel implements ActionListener {
 		// changes FaceIco icon to "won" or "lost"
 
 		if (state == 1){
-			//minesGUIFaceIco.setIcon(scaleImageIco("src/images/001_face_happy.png", minesGUIFaceIcoSize, minesGUIFaceIcoSize));
 			minesGUIFaceIco.setIcon(scaleImageIco("/images/001_face_happy.png", minesGUIFaceIcoSize, minesGUIFaceIcoSize));
 		}else if (state == 2){
-			//minesGUIFaceIco.setIcon(scaleImageIco("src/images/004_face_winner.png", minesGUIFaceIcoSize, minesGUIFaceIcoSize));
 			minesGUIFaceIco.setIcon(scaleImageIco("/images/004_face_winner.png", minesGUIFaceIcoSize, minesGUIFaceIcoSize));
 		}else if (state == 3){
-			//minesGUIFaceIco.setIcon(scaleImageIco("src/images/003_face_defeat.png", minesGUIFaceIcoSize, minesGUIFaceIcoSize));
 			minesGUIFaceIco.setIcon(scaleImageIco("/images/003_face_defeat.png", minesGUIFaceIcoSize, minesGUIFaceIcoSize));
 		}
 	}
@@ -157,19 +142,12 @@ public class Toolbar extends JPanel implements ActionListener {
 	
 	public ImageIcon scaleImageIco(String imgIcoLocation, int resizedW, int resizedH){
 		// method for resizing images (image icons). Used for graphic icons. Reworked method from internet
-		
-		
-		//imageInfoLabel.setIcon(  new ImageIcon(MainFrame.class.getResource("/images/040_info_jdialog_icon.png"))  );
-		//MainFrame.class.getResource("/images/040_info_jdialog_icon.png")
-		
-		//ImageIcon imageIcon = new ImageIcon(imgIcoLocation); // load the image to a imageIcon
-		//ImageIcon imageIcon = new ImageIcon(   MainFrame.class.getResource(  imgIcoLocation)  ); // load the image to a imageIcon
+			
 		ImageIcon imageIcon = new ImageIcon(   Toolbar.class.getResource(  imgIcoLocation)  ); // load the image to a imageIcon
 		Image image = imageIcon.getImage(); // transform it 
 		Image newimg = image.getScaledInstance(resizedW, resizedH,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
-		//imageIcon = new ImageIcon(newimg);  // transform it back
 		
-	    return new ImageIcon(newimg); // returns after transforming it back
+		return new ImageIcon(newimg); // returns after transforming it back
 	}
 
 	public void setStringListenerToolbarNewgame(ButtonFieldListener listener){
@@ -180,29 +158,12 @@ public class Toolbar extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		JButton clicked = (JButton)e.getSource();  // (JButton)  casts event 
 		//System.out.println("Toolbar. Button Face NewGame was clicked");
 		
 		if(textToolbarNewgameListener != null ){
-			//System.out.println("Toolbar. Hello button was clicked");
-
+			//System.out.println("Toolbar. Face NewGame button was clicked");
 			textToolbarNewgameListener.textEmitted("");
-		}
-		
-		
-		/*
-		
-		if(textFieldListener != null ){
-			System.out.println("      Hello button was clicked");
-
-			//textFieldListener.textEmitted("Hello\n");
-			
-			textFieldListener.textEmitted(clicked.getText());
-		}
-		
-		*/
-		
-		
+		}		
 	}
 
 	

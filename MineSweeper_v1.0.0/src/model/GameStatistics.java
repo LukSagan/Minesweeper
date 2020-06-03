@@ -60,9 +60,7 @@ public class GameStatistics {
 	// separate class so its easier to maintain
 	// deals with statistics variables and writing to files, SQL
 	
-	//private final String dataFilePath = "src/data.txt";
 	private final String dataFilePath = "data.txt";
-	//private final String dataSerializedFilePath = "src/data.bin";
 	private final String dataSerializedFilePath = "data.bin";
 	protected int clicks;
 	protected int flagsUsed;
@@ -88,7 +86,7 @@ public class GameStatistics {
 	protected long timeOfThePreviousClick;     // for counting how long it takes between clicks
 	
 	
-	//below are thing read from data file
+	//below are things read from data file
 	protected int windowPositionXSetting = 0; //800
 	protected int windowPositionYSetting = 0; //500
 	protected boolean showStatisticsSetting = false;
@@ -100,6 +98,7 @@ public class GameStatistics {
 	protected ArrayList<GameWonStats> gamesStats = new ArrayList<GameWonStats>();
 	protected GameWonStats gameLastStats;
 	
+	// listeners
 	protected GameGames1_5StatsListener arrayGameStats5GamesListener;    // listener, sends information to Minefield to show in stats new set of times
 	protected ButtonFieldListener textGameStatsNewRecordListener;    // listener, sends information to Minefield to show in stats comment about record (or resets that field)
 	protected GameNewWonLostListener intGameOptionsStatsWindowListener;    // listener, sends information to Mainframe to show Stats pane
@@ -112,13 +111,11 @@ public class GameStatistics {
 	public GameStatistics(){
 		resetCurrentGameStatistics();		
 		
-	}
-	
+	}	
 	
 	protected void resetCurrentGameStatistics(){
 		clicks = 0;
 		flagsUsed = 0;
-		//gameWonLost = 0;
 		gameWonLost = 2;
 		
 		clickIterations = 0;
@@ -145,11 +142,9 @@ public class GameStatistics {
 		if(iterations==1){
 			averageTime = newTime;			
 		}else{
-			//averageTime = (averageClick*iterations + newClickTime)/(iterations+1);			
 			averageTime = (averageClick*(iterations-1) + newTime)/(iterations);
 		}
-		//averageTime = doubleAccuracyRounder(averageTime, statTimeAccuracy);  // this is for 0,1sec accuracy
-
+		
 		return averageTime;
 	}
 	
@@ -162,10 +157,8 @@ public class GameStatistics {
 		if(iterations==1){
 			averageTime = newTime;			
 		}else{
-			//averageTime = (averageClick*iterations + newClickTime)/(iterations+1);			
 			averageTime = (averageTimeofGameHistory*(iterations-1) + newTime)/(iterations);
 		}		
-		//averageTime = doubleAccuracyRounder(averageTime, statTimeAccuracy);  // this is for 0,1sec accuracy
 		return averageTime;
 	}
 		
@@ -181,8 +174,6 @@ public class GameStatistics {
 		// cuts off numbers after accuracy and converts to String
 		
 		// find '.' or ',' index, check length of fractional part, round if needed and return
-		//String string = Double.toString(number); // this fails with big numbers (other representation of numbers)
-		//String string = String.format("%f", number);
 		int dotIndex = 0;
 		for(int i=0; i<number.length(); i++){
 			if( (number.charAt(i) == ".".charAt(0)) || (number.charAt(i) == ",".charAt(0))    ) {
@@ -192,11 +183,9 @@ public class GameStatistics {
 		}
 		
 		int fractionalLength = number.length() - dotIndex - 1;
-		////System.out.println("    GameStatistics. fractional length of " + number + " is: " + fractionalLength);
 		//System.out.println("    GameStatistics. Number: " + number + "   dotIndex: " + dotIndex + "fractional length of " + number + " is: " + fractionalLength);
 		
 		accuracy = Math.log10((double)(1d/accuracy)) + 0.00001;
-		////System.out.println("    GameStatistics. Accuracy (no places after sep) : " + Math.log10((double)(1d/accuracy)) + "   modulo: " + (long)Math.log10((double)(1d/accuracy))      );
 		//System.out.println("    GameStatistics. Accuracy (no places after sep) : " + accuracy + "   modulo: " + (long)accuracy      );
 		
 		
@@ -216,9 +205,6 @@ public class GameStatistics {
 	}
 	
 	
-	
-	//protected void writeStatsToFile(int winX, int winY, String statsOption, int gamesPlayed, int gamesWon, double avgGameTime, double game1Time, int game1Clicks, String game1Date, double gameLastTime, int gameLastClicks, String gameLastDate){
-	//protected void writeStatsToFile(int winX, int winY, String statsOption, int gamesPlayed, int gamesWon, double avgGameTime, double gameLastTime, int gameLastClicks, String gameLastDate){
 	protected void writeStatsToFile( double gameLastTime, int gameLastClicks, String gameLastDate){
 		
 		File file = new File(dataFilePath);
@@ -234,13 +220,10 @@ public class GameStatistics {
 			}
 			
 			//System.out.println("      GameStatistics after listener.  winPosX: " + windowPositionXSetting + " winPosY: " + windowPositionYSetting);
-			//br.write("[window positionX]: " + winX);
 			br.write("[window positionX]: " + windowPositionXSetting);
 			br.newLine();
-			//br.write("[window positionY]: " + winY);
 			br.write("[window positionY]: " + windowPositionYSetting);
 			br.newLine();
-			//br.write("[show statistics]: " + statsOption);  // this option makes game show/hide statistics pane with game start 
 			if(showStatisticsSetting)br.write("[show statistics]: " + "yes");  // this option makes game show/hide statistics pane with game start
 			else br.write("[show statistics]: " + "no");  // this option makes game show/hide statistics pane with game start
 			br.newLine();
@@ -249,13 +232,10 @@ public class GameStatistics {
 			
 			br.write("*** TOTAL GAMES STATISTICS ***");
 			br.newLine();
-			//br.write("[games played]: " + gamesPlayed);
 			br.write("[games played]: " + gamesPlayedNumberHistory);
 			br.newLine();
-			//br.write("[games won]: " + gamesWon);
 			br.write("[games won]: " + gamesWonNumberHistory);
 			br.newLine();
-			//br.write("[average time of game]: " + avgGameTime);
 			br.write("[average time of game]: " + averageTimeOfGameHistory);
 			br.newLine();
 			br.newLine();
@@ -335,7 +315,6 @@ public class GameStatistics {
 			String line;
 			
 			while( (line = br.readLine()) != null ){
-				//fileContents.set(i, line);
 				fileContents.add(line);
 				//System.out.println("      GameStats. writeSettingsToFile   contents of read file: " + fileContents.get(fileContents.size()-1));
 			}	
@@ -343,21 +322,14 @@ public class GameStatistics {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.out.println("      GameStats. ERROR. Couldnt find file " + file.toString());
-			// ????
 			resetStatsCurrentGameAndBest5();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.out.println("      GameStats. ERROR. Couldnt find file IOException" + file.toString());
-			// ????
-			//resetStatsCurrentGameAndBest5();
 		}
-			
 		
 		
-		
-		
-	
 		try (BufferedWriter br = new BufferedWriter(new FileWriter(file));){ // rewrite stuff from arrayList to file, change settings lines
 			
 			int i=0;
@@ -374,13 +346,10 @@ public class GameStatistics {
 				
 				if (  line.startsWith("[window positionX]:")  ){
 					//System.out.println("      GameStats. writeSettingsToFile    Found '[window positionX]:' in array ");
-					//br.write("[window positionX]: 300");
 					br.write("[window positionX]: " + windowPositionXSetting);
 				}else if(  line.startsWith("[window positionY]:")  ){
-					//br.write("[window positionY]: 100");
 					br.write("[window positionY]: " + windowPositionYSetting);
 				}else if(  line.startsWith("[show statistics]:")  ){
-					//br.write("[show statistics]: yes");
 					if(showStatisticsSetting)br.write("[show statistics]: " + "yes");  // this option makes game show/hide statistics pane with game start
 					else br.write("[show statistics]: " + "no");  // this option makes game show/hide statistics pane with game start
 				}else{
@@ -394,11 +363,7 @@ public class GameStatistics {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.out.println("      GameStats. ERROR. Couldnt write to file: " + file.toString());
-			// ???? make warning somewhere in game window? 
 		}
-		
-		
-		
 		
 		
 		// adding games stats to serializable class and writing that class to file
@@ -420,14 +385,10 @@ public class GameStatistics {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-		
-		
 	}
+		
 	
-	
-	
+	@SuppressWarnings("unused")
 	protected void readStatsFromFile(){
 		
 		File file = new File(dataFilePath);
@@ -435,8 +396,6 @@ public class GameStatistics {
 		
 		try(BufferedReader br = new BufferedReader(new FileReader(file));){
 			String line;
-			
-			//sdfsdf
 			gamesStats = new ArrayList<GameWonStats>();  // creating new array  for global variable
 			
 			while( (line = br.readLine()) != null ){
@@ -454,7 +413,6 @@ public class GameStatistics {
 								//windowPositionXSetting
 								
 								//System.out.println("      GameStats. options file WinX: " + line.substring(20));
-								// ???? check if those are ints
 								windowPositionXSetting = convertStringToInt(line.substring(20), "GAME OPTIONS");
 								break;
 							case 1:
@@ -505,7 +463,7 @@ public class GameStatistics {
 					}
 					
 					if(  (gamesPlayedNumberHistory == -987654312) || (gamesWonNumberHistory == -987654312) || (averageTimeOfGameHistory == -987654312)  ){
-						// somehow reset stats
+						
 						
 					}
 					
@@ -516,118 +474,6 @@ public class GameStatistics {
 					
 					readSingleGameOfBest5StatsFromFile(br, line.substring(3, 9));
 					
-					//gamesStats.add(new GameWonStats(gameTime, gameClicks, gameDate));
-					
-					
-					/*
-				}else if(  line.compareTo("** GAME 2 **")== 0  ){
-					//System.out.println(line);
-					
-					String gameNumber = line.substring(3, 9);
-					double gameTime = 0;
-					int gameClicks = 0;
-					String gameDate = "";
-					
-					for (int i=0; i<3; i++ ){
-						line = br.readLine();
-						switch(i){
-							case 0:
-								//game time
-								gameTime = convertStringToDouble(line.substring(8), gameNumber);
-								break;
-							case 1:
-								//game clicks
-								gameClicks = convertStringToInt(line.substring(10), gameNumber);
-								break;
-							case 2:
-								//game date
-								gameDate = line.substring(8);
-								break;
-						}
-					}
-					gamesStats.add(new GameWonStats(gameTime, gameClicks, gameDate));
-					
-				}else if(  line.compareTo("** GAME 3 **")== 0  ){
-					//System.out.println(line);
-					
-					String gameNumber = line.substring(3, 9);
-					double gameTime = 0;
-					int gameClicks = 0;
-					String gameDate = "";
-					
-					for (int i=0; i<3; i++ ){
-						line = br.readLine();
-						switch(i){
-							case 0:
-								//game time
-								gameTime = convertStringToDouble(line.substring(8), gameNumber);
-								break;
-							case 1:
-								//game clicks
-								gameClicks = convertStringToInt(line.substring(10), gameNumber);
-								break;
-							case 2:
-								//game date
-								gameDate = line.substring(8);
-								break;
-						}
-					}
-					gamesStats.add(new GameWonStats(gameTime, gameClicks, gameDate));
-					
-				}else if(  line.compareTo("** GAME 4 **")== 0  ){
-					//System.out.println(line);
-					
-					String gameNumber = line.substring(3, 9);
-					double gameTime = 0;
-					int gameClicks = 0;
-					String gameDate = "";
-					
-					for (int i=0; i<3; i++ ){
-						line = br.readLine();
-						switch(i){
-							case 0:
-								//game time
-								gameTime = convertStringToDouble(line.substring(8), gameNumber);
-								break;
-							case 1:
-								//game clicks
-								gameClicks = convertStringToInt(line.substring(10), gameNumber);
-								break;
-							case 2:
-								//game date
-								gameDate = line.substring(8);
-								break;
-						}
-					}
-					gamesStats.add(new GameWonStats(gameTime, gameClicks, gameDate));
-					
-				}else if(  line.compareTo("** GAME 5 **")== 0  ){
-					//System.out.println(line);
-					
-					String gameNumber = line.substring(3, 9);
-					double gameTime = 0;
-					int gameClicks = 0;
-					String gameDate = "";
-					
-					for (int i=0; i<3; i++ ){
-						line = br.readLine();
-						switch(i){
-							case 0:
-								//game time
-								gameTime = convertStringToDouble(line.substring(8), gameNumber);
-								break;
-							case 1:
-								//game clicks
-								gameClicks = convertStringToInt(line.substring(10), gameNumber);
-								break;
-							case 2:
-								//game date
-								gameDate = line.substring(8);
-								break;
-						}
-					}
-					gamesStats.add(new GameWonStats(gameTime, gameClicks, gameDate));
-					*/	
 				}else if(  line.compareTo("** LAST GAME **")== 0  ){
 					//System.out.println(line);
 					String gameNumber = line.substring(3, 12);
@@ -653,16 +499,8 @@ public class GameStatistics {
 						}
 					}
 					gameLastStats = new GameWonStats(gameTime, gameClicks, gameDate);
-					//gameLastStats.writePastGameStats(gameTime, gameClicks, gameDate);
 					
-
-				//}else{System.out.println("      GameStats. Didnt find anything in file");
-					
-				}
-				
-				
-				
-				
+				}				
 			} // this ends reading file
 			
 			boolean anyGame1_5IncorrectData = false;  // checking if any game1-5 from file has incorrect data
@@ -672,16 +510,7 @@ public class GameStatistics {
 					break;					
 				}				
 			}			
-			//if(  ( windowPositionXSetting == -987654312) || ( windowPositionYSetting == -987654312) || (gamesPlayedNumberHistory == -987654312) || (gamesWonNumberHistory == -987654312) || (averageTimeOfGameHistory == -987654312) || (anyGame1_5IncorrectData) || (gameLastStats.readPastGameStatsTime() == -987654312) || (gameLastStats.readPastGameStatsClicks() == -987654312)  ){
-			/*
-			if(  ( windowPositionXSetting == -987654312) || ( windowPositionYSetting == -987654312) || (gamesPlayedNumberHistory == -987654312) || (gamesWonNumberHistory == -987654312) || (averageTimeOfGameHistory == -987654312) || (anyGame1_5IncorrectData)   ){
-				// condition if any stat read from file was corrupted      then reset stats
-				
-				resetStatsCurrentGameAndBest5();
-				
-			}
-			*/
-			
+						
 			if(  ( windowPositionXSetting == -987654312) || ( windowPositionYSetting == -987654312) || (gamesPlayedNumberHistory == -987654312) || (gamesWonNumberHistory == -987654312) || (averageTimeOfGameHistory == -987654312) || (anyGame1_5IncorrectData) || (gameLastStats == null)   ){
 				// condition if any stat read from file was corrupted      then reset stats
 				System.out.println("      GameStats. R");
@@ -689,42 +518,29 @@ public class GameStatistics {
 				writeStatsToFile(999.9d, 0, "2000.01.01");
 				
 			}else if(  (gameLastStats.readPastGameStatsTime() == -987654312) || (gameLastStats.readPastGameStatsClicks() == -987654312)  ){
-				
 				resetStatsCurrentGameAndBest5();
 				writeStatsToFile(999.9d, 0, "2000.01.01");
 			}
-			
-			
-			
+
 			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.out.println("      GameStats. Reading file ERROR.    Couldnt find file " + file.toString());
-			// ????
 			resetStatsCurrentGameAndBest5();
 			writeStatsToFile(999.9d, 0, "2000.01.01");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.out.println("      GameStats. Reading file ERROR.    IOException" + file.toString());
-			// ????
 			resetStatsCurrentGameAndBest5();
 			writeStatsToFile(999.9d, 0, "2000.01.01");
 		}
 		
-		sortGamesStatsArray(); // ???? sorting list. list in file should already be sorted, but its in case some1 played with file
+		sortGamesStatsArray(); // sorting list. list in file should already be sorted, but its in case some1 played with file
+				
 		
-		/*// print, to check fast if correct list is read
-		for(GameWonStats value: gamesStats){
-			System.out.println("zzzzz: " + value.readPastGameStatsClicks());
-			
-		}*/
-		
-		
-		
-		// reading serialized object with games stats
-		
+		// reading serialized object with games stats		
 		try(FileInputStream fi = new FileInputStream(dataSerializedFilePath)){
 			
 			ObjectInputStream os = new ObjectInputStream(fi);			
@@ -742,27 +558,14 @@ public class GameStatistics {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-		
-		
-		
-		
-		
+				
 	}
-	
-	
-	
-	
 	
 	
 	protected void addRecentGameToArray(String time, int clicks, String date){
 		// adds just finished game to array, then sorts list by game time
 		
-		//GameWonStats recentGameStats = new GameWonStats(time, clicks, date);
 		GameWonStats recentGameStats = new GameWonStats(Double.parseDouble(time), clicks, date);
-		
-		//gamesStats.add(recentGameStats); // this will add game to list and list will grow infinitely
 		
 		// cases to so list size doesnt exceed 5-6
 		if( gamesStats.size() == 5 ){
@@ -774,14 +577,9 @@ public class GameStatistics {
 			
 		}
 		//System.out.println("      GameStats. Size of gamesStats" + gamesStats.size());		
-		sortGamesStatsArray();
-		/*
-		for(GameWonStats value: gamesStats){ // ???? showing games after sorting, later hide this
-			System.out.println("      GameStats. Games after sorting by time.    " + (gamesStats.indexOf(value)+1) + ".   " + value);
-			
-		}
-		*/
+		sortGamesStatsArray();		
 	}
+	
 	
 	protected void sortGamesStatsArray(){
 		// sort list of games by game time
@@ -798,10 +596,11 @@ public class GameStatistics {
 				}else if( g1.readPastGameStatsTime() < g2.readPastGameStatsTime() ){
 					return -1;					
 				}
-				return 0; // ???? what happens, when games have same times, but different dates. new one should be discarded
+				return 0;
 			}
 		});		
 	}
+	
 	
 	private void readSingleGameOfBest5StatsFromFile(BufferedReader br, String line){
 		// reads stats of single game (from best 5) and adds it to ArrayList
@@ -839,29 +638,17 @@ public class GameStatistics {
 					break;
 			}
 		}
-		gamesStats.add(new GameWonStats(gameTime, gameClicks, gameDate));
-		
+		gamesStats.add(new GameWonStats(gameTime, gameClicks, gameDate));		
 	}
 	
+	
 	protected void resetStatsCurrentGameAndBest5(){  // resets stats of current game and best 5 games
-		//windowPositionXSetting = 0;
-		//windowPositionYSetting = 0;
-		//showStatisticsSetting = false;
 		gamesPlayedNumberHistory = 0;
 		gamesWonNumberHistory = 0;
 		averageTimeOfGameHistory = 999.9d;  // ???? average 0 taken into average will lowr
 		
-		/*
-		System.out.println("      GameStats. Array GameWonStats  before 'reseting it'");
-		for(GameWonStats someGame: gamesStats){
-			System.out.println(someGame);			
-		}
-		*/
-		
-		
-		// games 1-5
-		//dgfghgfh doestnt work adds games instead of changing
-		
+				
+		// games 1-5		
 		if(gamesStats.size() == 0){   // this handles when reading stats from file, but there is no file, so creating 'reset data'
 			gamesStats = new ArrayList<GameWonStats>();  // creating new array  for global variable
 			
@@ -874,19 +661,9 @@ public class GameStatistics {
 			}
 		}
 		
-		
-		
-		/*
-		System.out.println("      GameStats. Array GameWonStats  after 'reseting it'");
-		for(GameWonStats someGame: gamesStats){
-			System.out.println(someGame);			
-		}
-		*/
-		
-		
-		
 		gameLastStats = new GameWonStats(999.9d, 0, "2000.01.01");		
 	}
+	
 	
 	public void setWindowPostionVariables(Point point){
 		windowPositionXSetting = point.x;
@@ -943,6 +720,7 @@ public class GameStatistics {
 		}		
 		return true;
 	}
+	
 		
 	public double convertStringToDouble(String text, String gameNumber){		
 		if(isDouble(text)){
@@ -957,9 +735,8 @@ public class GameStatistics {
 			// string failed to be a number, depending on what called it, do appropriate actions
 			return -987654312;
 		}
-		// ???? break something, to not read game stats
-		//return 0;
 	}
+	
 	
 	public int convertStringToInt(String text, String gameNumber){		
 		if(isInt(text)){
@@ -974,19 +751,14 @@ public class GameStatistics {
 			// string failed to be a number, depending on what called it, do appropriate actions
 			return -987654312;
 		}
-		// ???? break something, to not read game stats
-		//return 0;
 	}
+	
 	
 	public void changeShowStatisticsSetting(boolean setting){
 		if(setting) showStatisticsSetting = true;
 		else showStatisticsSetting = false;		
 	}
-	
-	
-	
-	
-	
+		
 	
 	public void setArrayListenerGameStats5Games(GameGames1_5StatsListener listener){
 		this.arrayGameStats5GamesListener = listener;
@@ -1011,7 +783,6 @@ public class GameStatistics {
 	public void setObjListenerGameStatistics(GameObjListener listener){
 		this.objGameStatisticsListener = listener;
 	}
-	
 	
 	
 	protected void showStatsFromFile(){

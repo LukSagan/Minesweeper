@@ -57,6 +57,7 @@ import model.GameObjListener;
 import model.GameWonStats;
 import model.ObjListener;
 
+@SuppressWarnings("serial")
 public class StatsPanel extends JPanel implements ActionListener{
 	
 	private JFrame mainFrameReference;
@@ -83,7 +84,6 @@ public class StatsPanel extends JPanel implements ActionListener{
 	
 	private boolean shouldFill = true;
 	private boolean shouldWeightX = true;
-	private boolean RIGHT_TO_LEFT = false;
 	
 	protected GameObjListener objStatsPanelStatisticsListener;  // universal listener, sends ints, Strings, Arrays depending how its set up
 	
@@ -113,36 +113,18 @@ public class StatsPanel extends JPanel implements ActionListener{
 		
 		resetStatsButton = new JButton("Zresetuj statystyki");
 		
-		/*
-		Border innerBorder = BorderFactory.createTitledBorder("Add Person");
-		Border outerBorder = BorderFactory.createEmptyBorder(5, 5, 5, 5);
-		setBorder(BorderFactory.createCompoundBorder(outerBorder, innerBorder));
-		*/
-		//setPreferredSize(new Dimension(10, 170));
-		//setPreferredSize(new Dimension(10, 200));
-		
 		Dimension dim = getPreferredSize();
 		dim.height = 240;  // 250
 		setPreferredSize(dim);
 		
-		
-		
-		
-		//Border innerBorder = BorderFactory.createEtchedBorder();
 		Border innerBorder = BorderFactory.createTitledBorder("Statystyki");
 		Border outerBorder = BorderFactory.createEmptyBorder(5, 5, 5, 5);
-		//Border outerBorder = BorderFactory.createEmptyBorder(0, 0, 0, 0);
 		setBorder(BorderFactory.createCompoundBorder(outerBorder, innerBorder));
-		
-		
-		
+				
 		setLayout(new GridBagLayout());
 		GridBagConstraints constraOne = new GridBagConstraints();
 		
 		if (shouldFill) {
-            //natural height, maximum width
-			//constraOne.fill = GridBagConstraints.HORIZONTAL;
-			//constraOne.fill = GridBagConstraints.CENTER;
 			constraOne.fill = GridBagConstraints.BOTH;
 			constraOne.anchor=GridBagConstraints.CENTER;
 		}
@@ -158,11 +140,8 @@ public class StatsPanel extends JPanel implements ActionListener{
 		addItemToGridBagLayout(constraOne, 0, 0, lastGameLabel1, null);
 		addItemToGridBagLayout(constraOne, 0, 1, lastGameLabel2, null);
 		
-		//infoRecordLabel.setPreferredSize(new Dimension(1, 40));
-		//constraOne.ipady = 20;      // this will make next items take more vertical space.    add constraOne.ipady = 0; later, so its reset
 		constraOne.insets = new Insets(10,0,10,0);  // padding
 		addItemToGridBagLayout(constraOne, 0, 2, infoRecordLabel, null);
-		//constraOne.ipady = 0;
 		constraOne.insets = new Insets(0,0,0,0);
 		
 		// ********* best 5 games *********
@@ -241,19 +220,16 @@ public class StatsPanel extends JPanel implements ActionListener{
 		
 		addItemToGridBagLayout(constraOne, 6, graphicalShiftBest5GamesGeneralStatsPositionY+1, gamesPlayedTLabel, null);
 		addItemToGridBagLayout(constraOne, 7, graphicalShiftBest5GamesGeneralStatsPositionY+1, gamesPlayedLabel, null);
+		
 		addItemToGridBagLayout(constraOne, 6, graphicalShiftBest5GamesGeneralStatsPositionY+2, gamesWonTLabel, null);
 		addItemToGridBagLayout(constraOne, 7, graphicalShiftBest5GamesGeneralStatsPositionY+2, gamesWonLabel, null);
+		
 		addItemToGridBagLayout(constraOne, 6, graphicalShiftBest5GamesGeneralStatsPositionY+3, percenWonTLabel, null);
-		//constraOne.weightx = 1.0;  // useless
 		percenWonLabel.setMinimumSize(new Dimension(42, 10));
 		percenWonLabel.setMaximumSize(new Dimension(42, 10));
 		percenWonLabel.setPreferredSize(new Dimension(42, 10));
-		//percenWonLabel.setMaximumSize(new Dimension(10, 10));
-		//percenWonLabel.setPreferredSize(new Dimension(10, 10));		
-		//constraOne.weightx = 1.0;  // useless
 		addItemToGridBagLayout(constraOne, 7, graphicalShiftBest5GamesGeneralStatsPositionY+3, percenWonLabel, null);
-		//percenWonLabel.setPreferredSize(new Dimension(50, 400));
-		//constraOne.weightx = 0.5;   // useless
+		
 		addItemToGridBagLayout(constraOne, 6, graphicalShiftBest5GamesGeneralStatsPositionY+4, avgGameTimeTLabel, null);
 		addItemToGridBagLayout(constraOne, 7, graphicalShiftBest5GamesGeneralStatsPositionY+4, avgGameTimeLabel, null);
 		
@@ -268,12 +244,7 @@ public class StatsPanel extends JPanel implements ActionListener{
 		constraOne.gridwidth = 2;
 		resetStatsButton.addActionListener(this);
 		addItemToGridBagLayout(constraOne, 6, graphicalShiftResetButtonY, null, resetStatsButton);
-		
-		//setPreferredSize(new Dimension(10, 170));		// moving up to test border
-		
-		//labelsBest5Games[0][1].setText("10");   // ???? test
-		
-		
+				
 		
 	}
 	
@@ -289,63 +260,34 @@ public class StatsPanel extends JPanel implements ActionListener{
 	}
 	
 	
-	
-	
-	//public void changeLastGameLabel(String text){
 	public void changeLastGameLabel(String[] stringArray){
 		//won/lost     time      clicks     cliks: fast, slow, avg    flags  
 		//when new game is loaded, just time, clicks, date		
-		/*
-		if(stringArray[3].compareTo("-1") != 0){
-			lastGameLabel1.setText("Ostani¹ grê " + stringArray[0] + ". Czas: " + stringArray[1] + ". Klikniêæ: " + stringArray[2] + 
-				". Œredni czas klikniêcia: " + stringArray[3] + ". Najszybszy: " + stringArray[4] + 
-				". Najwolniejszy: " + stringArray[5] + "U¿yto " + stringArray[6] + " flag.");			
-		}else{
-			lastGameLabel1.setText("Czas ostatniej gry: " + stringArray[1] + ". Klikniêæ: " + stringArray[2] + ". Data: " + stringArray[0]);
-		}
-		*/
-		
-		
+				
 		
 		if(stringArray[3].compareTo("-1") != 0){
-			/*
-			lastGameLabel1.setText("Ostani¹ grê " + stringArray[0] + ". Czas: " + stringArray[1] + ". Klikniêæ: " + stringArray[2] + 
-				". Œredni czas klikniêcia: " + stringArray[3] + ". Najszybszy: " + stringArray[4] + 
-				". Najwolniejszy: " + stringArray[5] + "U¿yto " + stringArray[6] + " flag.");
-			lastGameLabel2.setText("stats");
-			*/
-			
 			lastGameLabel1.setText("Ostani¹ grê " + stringArray[0] + ".     Czas:  " + stringArray[1] + " sek.     Klikniêæ:  " + stringArray[2] + ".     U¿yto flag:  " + stringArray[6] + ".");
-					
 			lastGameLabel2.setText("Œredni czas klikniêcia:  " + stringArray[3] + ".     Najszybsze:  " + stringArray[4] + 
 				".     Najwolniejsze:  " + stringArray[5] + ".");
-		
-			
-			
 		}else{
 			lastGameLabel1.setText("Czas ostatniej gry:  " + stringArray[1] + " sek.   Klikniêæ:  " + stringArray[2] + ".   Data:  " + stringArray[0]);
 			lastGameLabel2.setText(" ");
-		}
-		
-		
-		
-		
-		
+		}		
 	}
 		
-	public void changeInfoRecordLabel(String text){  // DONE         ????
+	public void changeInfoRecordLabel(String text){
 		infoRecordLabel.setText(text);
 		
 	}
 	
-	public void changeGames1_5Label(ArrayList<GameWonStats> set){  // DONE         ????
+	public void changeGames1_5Label(ArrayList<GameWonStats> set){
 		for(int i=0; i<5; i++){
 			labelsBest5Games[i][1].setText(Double.toString(set.get(i).readPastGameStatsTime()));
 			labelsBest5Games[i][3].setText(Integer.toString(set.get(i).readPastGameStatsClicks()));			
-			//labelsBest5Games[i][5].setText(set.get(i).readPastGameStatsDate());
 			labelsBest5Games[i][5].setText(set.get(i).readPastGameStatsDate() + "       ");  // giving some space between 'best 5 games' and 'overall stats'
 		}
 	}
+	
 	
 	public void changeoOverallStatsLabels(String[] stringArray){
 		gamesPlayedLabel.setText(stringArray[0]);
@@ -379,7 +321,6 @@ public class StatsPanel extends JPanel implements ActionListener{
 		JOptionPane pane = new JOptionPane();
 		Object[] options = {"Tak", "Nie"};
 		@SuppressWarnings("static-access")
-		//int reply = pane.showOptionDialog((JFrame)null,
 		int reply = pane.showOptionDialog(mainFrameReference,
 				"Czy na pewno chcesz zresetowaæ statystyki?",
 				"Resetowanie statystyk",
@@ -401,11 +342,11 @@ public class StatsPanel extends JPanel implements ActionListener{
 		}	
 	}
 	
+	@SuppressWarnings("static-access")
 	private void showMessageCannotResetStats(){
 		// used when trying to resets games stats and game is ongoing
 		
 		JOptionPane pane = new JOptionPane();
-		//pane.showMessageDialog((JFrame)null, "Aby zresetowaæ statystyki nale¿y zakoñczyæ aktualn¹ grê", "Próba resetowania statystyk", JOptionPane.INFORMATION_MESSAGE);
 		pane.showMessageDialog(mainFrameReference, "Aby zresetowaæ statystyki nale¿y zakoñczyæ aktualn¹ grê", "Próba resetowania statystyk", JOptionPane.INFORMATION_MESSAGE);
 	}
 	
@@ -414,8 +355,6 @@ public class StatsPanel extends JPanel implements ActionListener{
 	public void getFrameReference(JFrame frameReference){ // 
 		mainFrameReference = frameReference;
 	}
-	
-	
 	
 	
 	public void setObjListenerStatsPanel(GameObjListener listener){

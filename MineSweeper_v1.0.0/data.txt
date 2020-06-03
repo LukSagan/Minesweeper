@@ -1,41 +1,41 @@
 *** GAME OPTIONS ***
-[window positionX]: 859
-[window positionY]: 217
+[window positionX]: 827
+[window positionY]: 123
 [show statistics]: yes
 
 *** TOTAL GAMES STATISTICS ***
-[games played]: 1
-[games won]: 0
-[average time of game]: 0.4
+[games played]: 23
+[games won]: 9
+[average time of game]: 3.0
 
 *** BEST 5 GAMES STATISTICS ***
 
 ** GAME 1 **
-[time]: 999.9
-[clicks]: 0
-[date]: 2000.01.01
+[time]: 0.0
+[clicks]: 1
+[date]: 2020.06.03
 
 ** GAME 2 **
-[time]: 999.9
-[clicks]: 0
-[date]: 2000.01.01
+[time]: 0.0
+[clicks]: 1
+[date]: 2020.06.03
 
 ** GAME 3 **
-[time]: 999.9
-[clicks]: 0
-[date]: 2000.01.01
+[time]: 0.0
+[clicks]: 1
+[date]: 2020.06.03
 
 ** GAME 4 **
-[time]: 999.9
-[clicks]: 0
-[date]: 2000.01.01
+[time]: 0.0
+[clicks]: 1
+[date]: 2020.06.03
 
 ** GAME 5 **
-[time]: 999.9
-[clicks]: 0
-[date]: 2000.01.01
+[time]: 0.0
+[clicks]: 1
+[date]: 2020.06.03
 
 ** LAST GAME **
-[time]: 0.4
-[clicks]: 2
+[time]: 4.0
+[clicks]: 8
 [date]: 2020.06.03

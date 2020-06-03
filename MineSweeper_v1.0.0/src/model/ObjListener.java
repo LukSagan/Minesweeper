@@ -36,8 +36,6 @@ jeœli nie - zobacz <http://www.gnu.org/licenses/>.
 
 package model;
 
-import java.util.ArrayList;
-
 public class ObjListener {
 	
 	private int code;
@@ -45,7 +43,6 @@ public class ObjListener {
 	private int number;
 	private double dNumber;
 	private String[] arrayStrings;// = new String[4];
-	//private String[] array7Strings;// = new String[7];
 	private int[] arrayInts;
 	
 	// constants for use as code
@@ -68,7 +65,6 @@ public class ObjListener {
 		number = numberM;
 		dNumber = dNumberM;
 		arrayStrings = array4StringsM;
-		//array7Strings = array7StringsM;
 	}
 	
 	private void resetVariables(){
@@ -124,12 +120,7 @@ public class ObjListener {
 		return arrayStrings;
 	}
 	
-	/*
-	public String[] getArray7Strings(){		
-		return arrayStrings;
-	}
-	*/
-	
+		
 	public int[] getArrayInts(){		
 		return arrayInts;
 	}
